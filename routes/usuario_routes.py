@@ -51,3 +51,9 @@ def deletar_usuario():
 
     flash("Usúario deletado com sucesso!", "success")
     return redirect(url_for("index"))
+
+@usuario_bp.route("/listar", methods=["GET"])
+def listar_usuarios():
+    usuarios = Usuario.query.all()
+
+    return render_template("index.html", usuarios=usuarios)
