@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca</title>
+    <style>
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: 0.3s;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.success { background: green; }
+.error { background: red; }
+    </style>
+</head>
+<body>
+    <h1>Sistema de Gerenciamento de Livros</h1>
+    <h3>Cadastrar Usúario</h3>
+    <form action="/usuarios/cadastrar" method="POST">
+        <label>Nome:</label> <br>
+        <input type="text" name="nome" required> <br> <br>
+
+        <label>Email:</label> <br>
+        <input type="text" name="email" required> <br> <br>
+
+        <label>Senha:</label> <br>
+        <input type="password" name="senha" required> <br> <br>
+        
+        <button type="submit">Cadastre-se</button> <br>
+        <hr>
+    </form>
+
+    <h3>Deletar Usúario</h3>
+    <form action="/usuarios/deletar" method="POST">
+        <label>ID:</label> <br>
+        <input type="number" name="usuario_id" required> <br> <br>
+
+        <button type="submit">Deletar</button> <br>
+        <hr>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="toast {{category}}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+<h3>Lista de Usúarios:</h3>
+<ul>
+    {% for usuario in usuarios %}
+        {% if usuario %}
+        <li>
+            ID: {{usuario.id}} <br>
+            Nome: {{usuario.nome}} <br>
+            Email: {{usuario.email}} <br>
+        </li>
+        <hr>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+
+
+
+<script>
+const toasts = document.querySelectorAll(".toast");
+
+toasts.forEach((toast) => {
+    setTimeout(() => toast.classList.add("show"), 100);
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+});
+</script>
+</body>
+</html>
