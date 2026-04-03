@@ -6,8 +6,8 @@ from werkzeug.security import generate_password_hash
 
 usuario_bp = Blueprint("usuarios", __name__)
 
-@usuario_bp.route("/cadastrar", methods=["POST"])
-def cadastrar_usuario():
+@usuario_bp.route("/novo", methods=["POST"])
+def novo_usuario():
 
     nome = request.form.get("nome")
     email = request.form.get("email")
