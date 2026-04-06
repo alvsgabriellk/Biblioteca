@@ -10,10 +10,16 @@ def novo_livro():
 
     titulo = request.form.get("titulo")
     autor = request.form.get("autor")
-    quantidade_total = request.form.get(int("quantidade_total"))
+    quantidade_total = request.form.get("quantidade_total")
 
     if not titulo or not autor or not quantidade_total:
         flash("Todos os dados são obrigatórios", "error")
+        return redirect(url_for("index"))
+    
+    try:
+        quantidade_total = int(quantidade_total)
+    except (TypeError, ValueError):
+        flash("Quantidade deve ser um número!", "error")
         return redirect(url_for("index"))
     
     livro = Livro(
@@ -37,13 +43,19 @@ def novo_livro():
 
 @livro_bp.route("/deletar", methods=["POST"])
 def deletar_livro():
-    id = request.form.get(int("livro_id"))
+    id = request.form.get("livro_id")
 
-    if not int(id):
+    if not id:
         flash("ID do Livro é obrigatório", "error")
         return redirect(url_for("index"))
+    
+    try:
+        id = int(id)
+    except (TypeError, ValueError):
+        flash("ID deve ser um número!", "error")
+        return redirect(url_for("index"))
 
-    if int(id) <= 0:
+    if id <= 0:
         flash("ID inválido", "error")
         return redirect(url_for("index"))
 
