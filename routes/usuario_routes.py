@@ -30,6 +30,7 @@ def novo_usuario():
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
+        
         flash("Esse e-mail já foi cadastrado.", "error")
         return redirect(url_for("index"))
 
@@ -46,6 +47,10 @@ def deletar_usuario():
 
     usuario = Usuario.query.get(id)
 
+    if not usuario:
+        flash("Usúario não encontrado no sistema", "error")
+        return redirect(url_for("index"))
+
     db.session.delete(usuario)
     db.session.commit()
 
@@ -55,5 +60,9 @@ def deletar_usuario():
 @usuario_bp.route("/listar", methods=["GET"])
 def listar_usuarios():
     usuarios = Usuario.query.all()
+
+    if not usuarios:
+        flash("Nenhum usúario encontrado", "error")
+        return redirect(url_for("index"))
 
     return render_template("index.html", usuarios=usuarios)
