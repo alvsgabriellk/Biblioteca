@@ -29,6 +29,17 @@ def novo_livro():
     flash("Livro criado com sucesso!", "success")
     return redirect(url_for("index"))
 
+@livro_bp.route("/deletar", methods=["POST"])
+def deletar_livro():
+    livro_id = request.form.get("livro_id")
+    livro = Livro.query.get(livro_id)
+
+    db.session.delete(livro)
+    db.session.commit()
+
+    flash("Livro deletado com sucesso!", "success")
+    return redirect(url_for("index"))
+
 @livro_bp.route("/listar", methods=["GET"])
 def listar_livros():
     livros = Livro.query.all()
