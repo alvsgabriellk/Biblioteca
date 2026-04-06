@@ -39,13 +39,19 @@ def novo_usuario():
 
 @usuario_bp.route("/deletar", methods=["POST"])
 def deletar_usuario():
-    id = request.form.get(int("usuario_id"))
+    id = request.form.get("usuario_id")
 
-    if not int(id):
+    if not id:
         flash("ID do Usúario é obrigatório", "error")
         return redirect(url_for("index"))
+    
+    try:
+        id = int(id)
+    except (TypeError, ValueError):
+        flash("ID deve ser um número!", "error")
+        return redirect(url_for("index"))
 
-    if int(id) <= 0:
+    if id <= 0:
         flash("ID inválido", "error")
         return redirect(url_for("index"))
 
