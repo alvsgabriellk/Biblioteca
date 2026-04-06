@@ -51,7 +51,7 @@
     <h3>Deletar Usúario</h3>
     <form action="/usuarios/deletar" method="POST">
         <label>ID:</label><br>
-        <input type="number" name="usuario_id" required><br><br>
+        <input type="text" name="usuario_id" required><br><br>
 
         <button type="submit">Deletar</button><br>
         <hr>
@@ -68,12 +68,22 @@
         <input type="text" name="autor" required><br><br>
 
         <label>Quantidade:</label><br>
-        <input type="number" name="quantidade_total" required><br><br>
+        <input type="text" name="quantidade_total" required><br><br>
 
         <button type="submit">Salvar</button>
         <hr>
     </form>
     <!-- FIM LIVRO CADASTRO -->
+
+    <!-- INICIO DELETAR LIVRO -->
+     <h3>Deletar Livro</h3>
+     <form action="/livros/deletar" method="POST">
+        <label>ID:</label><br>
+        <input type="text" name="livro_id" required><br><br>
+
+        <button type="submit">Deletar</button>
+        <hr>
+     </form>
 
     <!-- INICIO LISTA DE USUARIOS -->
     <h3>Lista de Usúarios:</h3>
