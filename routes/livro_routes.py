@@ -7,9 +7,14 @@ livro_bp = Blueprint("livros", __name__)
 
 @livro_bp.route("/novo", methods=["POST"])
 def novo_livro():
+
     titulo = request.form.get("titulo")
     autor = request.form.get("autor")
     quantidade_total = request.form.get(int("quantidade_total"))
+
+    if not titulo or not autor or not quantidade_total:
+        flash("Todos os dados são obrigatórios", "error")
+        return redirect(url_for("index"))
     
     livro = Livro(
         titulo=titulo,
@@ -23,6 +28,7 @@ def novo_livro():
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
+        
         flash("Esse Livro já foi cadastrado.", "error")
         return redirect(url_for("index"))
     
@@ -31,9 +37,18 @@ def novo_livro():
 
 @livro_bp.route("/deletar", methods=["POST"])
 def deletar_livro():
-    livro_id = request.form.get("livro_id")
-    livro = Livro.query.get(livro_id)
+    id = request.form.get(int("livro_id"))
 
+    if not id:
+        flash("ID do Livro é obrigatório", "error")
+        return redirect(url_for("index"))
+
+    livro = Livro.query.get(id)
+
+    if not livro:
+        flash("Livro não encontrado no sistema", "error")
+        return redirect(url_for("index"))
+    
     db.session.delete(livro)
     db.session.commit()
 
@@ -43,5 +58,9 @@ def deletar_livro():
 @livro_bp.route("/listar", methods=["GET"])
 def listar_livros():
     livros = Livro.query.all()
+
+    if not livros:
+        flash("Nenhum livro encontrado", "error")
+        return redirect(url_for("index"))
 
     return render_template("index.html", livros=livros)
