@@ -28,7 +28,7 @@ def novo_livro():
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        
+
         flash("Esse Livro já foi cadastrado.", "error")
         return redirect(url_for("index"))
     
@@ -39,8 +39,12 @@ def novo_livro():
 def deletar_livro():
     id = request.form.get(int("livro_id"))
 
-    if not id:
+    if not int(id):
         flash("ID do Livro é obrigatório", "error")
+        return redirect(url_for("index"))
+
+    if int(id) <= 0:
+        flash("ID inválido", "error")
         return redirect(url_for("index"))
 
     livro = Livro.query.get(id)

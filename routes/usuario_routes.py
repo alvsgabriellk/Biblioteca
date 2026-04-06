@@ -30,7 +30,7 @@ def novo_usuario():
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        
+
         flash("Esse e-mail já foi cadastrado.", "error")
         return redirect(url_for("index"))
 
@@ -39,10 +39,14 @@ def novo_usuario():
 
 @usuario_bp.route("/deletar", methods=["POST"])
 def deletar_usuario():
-    id = request.form.get("usuario_id")
+    id = request.form.get(int("usuario_id"))
 
-    if not id:
+    if not int(id):
         flash("ID do Usúario é obrigatório", "error")
+        return redirect(url_for("index"))
+
+    if int(id) <= 0:
+        flash("ID inválido", "error")
         return redirect(url_for("index"))
 
     usuario = Usuario.query.get(id)
