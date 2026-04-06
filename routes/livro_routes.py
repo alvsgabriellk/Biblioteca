@@ -28,3 +28,9 @@ def novo_livro():
     
     flash("Livro criado com sucesso!", "success")
     return redirect(url_for("index"))
+
+@livro_bp.route("/listar", methods=["GET"])
+def listar_livros():
+    livros = Livro.query.all()
+
+    return render_template("index.html", livros=livros)
