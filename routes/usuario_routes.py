@@ -15,18 +15,18 @@ def novo_usuario():
 
     if not nome or not email or not senha:
         flash("Todos os dados são obrigatórios", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 400
     
     if len(senha) < 8:
         flash("A senha precisa ter no mínimo 8 caracteres", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 400
     if len(senha) > 20:
         flash("A senha pode ter no máximo 20 caracteres", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 400
     
     if senha.isdigit():
         flash("A senha não pode conter apenas números", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 400
 
     senha_hash = generate_password_hash(senha)
 
@@ -43,10 +43,10 @@ def novo_usuario():
         db.session.rollback()
 
         flash("Esse e-mail já foi cadastrado.", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 409
 
     flash("Usúario criado com sucesso!", "success")
-    return redirect(url_for("index"))     
+    return render_template("index.html"), 201
 
 @usuario_bp.route("/deletar", methods=["POST"])
 def deletar_usuario():
@@ -54,17 +54,17 @@ def deletar_usuario():
 
     if not id:
         flash("ID do Usúario é obrigatório", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 400
     
     try:
         id = int(id)
     except (TypeError, ValueError):
         flash("ID deve ser um número!", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 400
 
     if id <= 0:
         flash("ID inválido", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 400
     
     #antes
     #usuario = Usuario.query.get(id)
@@ -74,13 +74,13 @@ def deletar_usuario():
 
     if not usuario:
         flash("Usúario não encontrado no sistema", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 404
 
     db.session.delete(usuario)
     db.session.commit()
 
     flash("Usúario deletado com sucesso!", "success")
-    return redirect(url_for("index"))
+    return render_template("index.html"), 200
 
 @usuario_bp.route("/listar", methods=["GET"])
 def listar_usuarios():
@@ -96,6 +96,6 @@ def listar_usuarios():
 
     if not usuarios:
         flash("Nenhum usúario encontrado", "error")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 404
 
-    return render_template("index.html", usuarios=usuarios)
+    return render_template("index.html", usuarios=usuarios), 200
