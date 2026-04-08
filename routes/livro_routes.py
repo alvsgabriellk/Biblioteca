@@ -8,12 +8,16 @@ livro_bp = Blueprint("livros", __name__)
 @livro_bp.route("/novo", methods=["POST"])
 def novo_livro():
 
-    titulo = request.form.get("titulo")
-    autor = request.form.get("autor")
-    quantidade_total = request.form.get("quantidade_total")
+    titulo = request.form.get("titulo", "").strip()
+    autor = request.form.get("autor", "").strip()
+    quantidade_total = request.form.get("quantidade_total", "").strip()
 
     if not titulo or not autor or not quantidade_total:
         flash("Todos os dados são obrigatórios", "error")
+        return redirect(url_for("index"))
+    
+    if not quantidade_total.isdigit():
+        flash("Quantidade deve conter apenas números", "error")
         return redirect(url_for("index"))
     
     try:
