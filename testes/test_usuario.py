@@ -1,3 +1,6 @@
+from models import Usuario
+from database.databanco import db
+
 def test_criar_usuario(client):
     response = client.post("/usuarios/novo", data={
         "nome": "Janaina",
@@ -7,7 +10,6 @@ def test_criar_usuario(client):
 
     assert response.status_code == 302
 
-    from models import Usuario
     usuario = Usuario.query.filter_by(nome="Janaina").first()
 
     assert usuario is not None
@@ -15,17 +17,38 @@ def test_criar_usuario(client):
 
 
 def test_criar_usuario_invalido(client):
+
     response = client.post("/usuarios/novo", data={
         "nome": "",
         "email": "",
         "senha": ""
     })
 
+    with client.application.app_context():
+        total = db.session.execute(db.select(Usuario)).scalars().all()
+        assert len(total) == 0
+
     assert response.status_code == 302
 
+def test_criar_usuario_senha_inválida(client):
+    response = client.post("/usuarios/novo", data={
+        "nome": "Gabriell",
+        "email": "cauagabriell@gmail.com",
+        "senha": "12345678"
+    })
+
+    assert response.status_code == 302
+
+    with client.application.app_context():
+        usuario = db.session.execute(
+            db.select(Usuario).filter_by(email="cauagabriell@gmail.com")
+        ).scalar_one_or_none()
+
+        assert usuario is None
+
+    
+
 def test_listar_produtos(client):
-    from database.databanco import db
-    from models import Usuario
 
     with client.application.app_context():
         db.session.add(Usuario(
@@ -42,8 +65,6 @@ def test_listar_produtos(client):
 
 
 def test_deletar_usuario(client):
-    from database.databanco import db
-    from models import Usuario
 
     with client.application.app_context():
         usuario = Usuario(
