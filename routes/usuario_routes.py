@@ -78,6 +78,10 @@ def listar_usuarios():
 
     #depois
     usuarios = db.session.execute(db.select(Usuario)).scalars().all()
+    #db.select = select * from 
+    #.execute(db.select(Usuario)) envia pro banco, e recebe resultado bruto
+    # pega os objetos usuario de cada linha
+    #.all transforma em lista
 
     if not usuarios:
         flash("Nenhum usúario encontrado", "error")
