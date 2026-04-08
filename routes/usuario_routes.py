@@ -9,12 +9,23 @@ usuario_bp = Blueprint("usuarios", __name__)
 @usuario_bp.route("/novo", methods=["POST"])
 def novo_usuario():
 
-    nome = request.form.get("nome")
-    email = request.form.get("email")
-    senha = request.form.get("senha")
+    nome = request.form.get("nome", "").strip()
+    email = request.form.get("email", "").strip()
+    senha = request.form.get("senha", "").strip()
 
     if not nome or not email or not senha:
         flash("Todos os dados são obrigatórios", "error")
+        return redirect(url_for("index"))
+    
+    if len(senha) < 8:
+        flash("A senha precisa ter no mínimo 8 caracteres", "error")
+        return redirect(url_for("index"))
+    if len(senha) > 20:
+        flash("A senha pode ter no máximo 20 caracteres", "error")
+        return redirect(url_for("index"))
+    
+    if senha.isdigit():
+        flash("A senha não pode conter apenas números", "error")
         return redirect(url_for("index"))
 
     senha_hash = generate_password_hash(senha)
