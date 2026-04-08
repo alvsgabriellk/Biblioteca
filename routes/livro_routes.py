@@ -58,8 +58,12 @@ def deletar_livro():
     if id <= 0:
         flash("ID inválido", "error")
         return redirect(url_for("index"))
+    
+    # antes
+    #livro = Livro.query.get(id)
 
-    livro = Livro.query.get(id)
+    #depois
+    livro = db.session.get(Livro, id)
 
     if not livro:
         flash("Livro não encontrado no sistema", "error")
@@ -73,7 +77,11 @@ def deletar_livro():
 
 @livro_bp.route("/listar", methods=["GET"])
 def listar_livros():
-    livros = Livro.query.all()
+    #antes
+    #livros = Livro.query.all()
+
+    #depois
+    livros = db.session.execute(db.select(Livro)).scalars().all()
 
     if not livros:
         flash("Nenhum livro encontrado", "error")

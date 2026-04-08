@@ -54,8 +54,12 @@ def deletar_usuario():
     if id <= 0:
         flash("ID inválido", "error")
         return redirect(url_for("index"))
+    
+    #antes
+    #usuario = Usuario.query.get(id)
 
-    usuario = Usuario.query.get(id)
+    #depois
+    usuario = db.session.get(Usuario, id)
 
     if not usuario:
         flash("Usúario não encontrado no sistema", "error")
@@ -69,7 +73,11 @@ def deletar_usuario():
 
 @usuario_bp.route("/listar", methods=["GET"])
 def listar_usuarios():
-    usuarios = Usuario.query.all()
+    #antes
+    #usuarios = Usuario.query.all()
+
+    #depois
+    usuarios = db.session.execute(db.select(Usuario)).scalars().all()
 
     if not usuarios:
         flash("Nenhum usúario encontrado", "error")
