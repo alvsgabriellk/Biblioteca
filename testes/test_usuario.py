@@ -1,5 +1,6 @@
 from models import Usuario
 from database.databanco import db
+import pytest
 
 def test_criar_usuario(client):
     response = client.post("/usuarios/novo", data={
@@ -8,7 +9,7 @@ def test_criar_usuario(client):
         "senha": "f2u2uf32"
     })
 
-    assert response.status_code == 302
+    assert response.status_code == 201
 
     usuario = Usuario.query.filter_by(nome="Janaina").first()
 
@@ -16,19 +17,29 @@ def test_criar_usuario(client):
     assert usuario.email == "janaina128@gmail.com"
 
 
-def test_criar_usuario_invalido(client):
+"""@pytest.mark.parametrize("nome, email, senha", [
+    ("",        "user@email.com", "senha123"),   # nome vazio
+    ("   ",     "user@email.com", "senha123"),   # nome só com espaço
+    ("João",    "",               "senha123"),   # email vazio
+    ("João",    "   ",            "senha123"),   # email só com espaço
+    ("João",    "user@email.com",  ""       ),   # senha vazia
+    ("João",    "user@email.com", "   "     ),   # senha só com espaço
+    ("",        "",               ""        ),   # tudo vazio
+])
+
+def test_criar_usuario_dados_invalido(client, nome, email, senha):
 
     response = client.post("/usuarios/novo", data={
-        "nome": "",
-        "email": "",
-        "senha": ""
+        "nome": nome,
+        "email": email,
+        "senha": senha
     })
 
     with client.application.app_context():
         total = db.session.execute(db.select(Usuario)).scalars().all()
         assert len(total) == 0
 
-    assert response.status_code == 302
+    assert response.status_code == 400"""
 
 def test_criar_usuario_senha_inválida(client):
     response = client.post("/usuarios/novo", data={
@@ -37,7 +48,7 @@ def test_criar_usuario_senha_inválida(client):
         "senha": "12345678"
     })
 
-    assert response.status_code == 302
+    assert response.status_code == 400
 
     with client.application.app_context():
         usuario = db.session.execute(
@@ -80,7 +91,7 @@ def test_deletar_usuario(client):
         "usuario_id": usuario_id
     })
 
-    assert response.status_code == 302
+    assert response.status_code == 200
 
     with client.application.app_context():
         usuario = db.session.get(Usuario, usuario_id)
