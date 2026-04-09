@@ -14,6 +14,13 @@ def realizar_emprestimo():
         flash("Todos os dados são obrigatórios", "error")
         return render_template("index.html"), 400
     
+    try:
+        usuario_id = int(usuario_id)
+        livro_id = int(livro_id)
+    except (TypeError, ValueError):
+        flash("ID tem que ser um número!", "error")
+        return render_template("index.html"), 400
+    
     if not usuario_id.isdigit() or not livro_id.isdigit():
         flash("ID deve ser um número!", "error")
         return render_template("index.html"), 400
@@ -33,3 +40,21 @@ def realizar_emprestimo():
     if not livro:
         flash("Livro não encontrado no sistema", "error")
         return render_template("index.html"), 404
+    
+    if livro.quantidade_disponivel <= 0:
+        flash("Livro indisponível", "error")
+        return render_template("index.html"), 404
+    
+    emprestimo = Emprestimo(
+        usuario_id=usuario_id,
+        livro_id=livro_id
+    )
+
+    livro.quantidade_disponivel -= 1
+
+    db.session.add(emprestimo)
+    db.session.commit()
+
+    flash("Empréstimo realizado com sucesso!", "success")
+    return render_template("index.html"), 201
+
