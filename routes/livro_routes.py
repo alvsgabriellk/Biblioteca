@@ -53,6 +53,12 @@ def deletar_livro():
         flash("ID do Livro é obrigatório", "error")
         return render_template("index.html"), 400
     
+    try:
+        id = int(id)
+    except (TypeError, ValueError):
+        flash("ID deve ser um número!", "error")
+        return render_template("index.html"), 400
+    
     if not id.isdigit():
         flash("ID tem que ser um número!", "error")
         return render_template("index,html"), 400
