@@ -30,7 +30,7 @@
     <h1>Sistema de Gerenciamento de Livros</h1>
 
     <!-- INICIO USUARIO CADASTRO -->
-    <h3>Novo Usúario</h3>
+    <h3>Novo Usuário</h3>
     <form action="/usuarios/novo" method="POST">
         <label>Nome:</label><br>
         <input type="text" name="nome" required><br><br>
@@ -48,7 +48,7 @@
 
 
     <!-- INICIO DELETAR USUARIO -->
-    <h3>Deletar Usúario</h3>
+    <h3>Deletar Usuário</h3>
     <form action="/usuarios/deletar" method="POST">
         <label>ID:</label><br>
         <input type="text" name="usuario_id" required><br><br>
@@ -86,7 +86,7 @@
      </form>
 
     <!-- INICIO LISTA DE USUARIOS -->
-    <h3>Lista de Usúarios:</h3>
+    <h3>Lista de Usuários:</h3>
     <ul>
         {% for usuario in usuarios %}
             {% if usuario %}
@@ -109,9 +109,39 @@
         <form action="/" method="GET">
             <button type="submit">Fechar lista</button>
         </form>
-    
     {% endif %}
     <!-- FIM LISTA DE USUARIOS -->
+
+
+    <!-- INICIO LISTA LIVROS -->
+     <h3>Lista de Livros:</h3>
+     <ul>
+        {% for livro in livros %}
+            {% if livro %}
+        <li>
+            ID: {{livro.id}}<br>
+            Titulo: {{livro.titulo}}<br>
+            Autor: {{livro.autor}}<br>
+            Disponiveis: {{livro.quantidade_disponivel}}<br>
+            DATA_CRIADO: {{livro.data_criado}}<br>
+        </li>
+        <hr>
+            {% endif %}
+        {% endfor %}    
+     </ul>
+
+     {% if request.path == "/" %}
+     <form action="/livros/listar">
+        <button type="submit">Ver livros</button>
+     </form>
+     {% endif %}
+
+     {% if request.path == "/livros/listar" %}
+     <form action="/">
+        <button type="submit">Fechar lista</button>
+     </form>
+     {% endif %}
+     <!-- FIM LISTA LIVROS -->
 
 
 
