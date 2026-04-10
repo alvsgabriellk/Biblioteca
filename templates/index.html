@@ -868,6 +868,18 @@ function show(id, el) {
 </script>
 
 
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const openSection = params.get("open");
+
+  if (openSection) {
+    show(openSection);
+  }
+});
+
+</script>
+
 
 </body>
 </html>
