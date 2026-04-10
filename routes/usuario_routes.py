@@ -15,18 +15,18 @@ def novo_usuario():
 
     if not nome or not email or not senha:
         flash("Todos os dados são obrigatórios", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="novoUsuario"), code=303)
     
     if len(senha) < 8:
         flash("A senha precisa ter no mínimo 8 caracteres", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index"),open="novoUsuario", code=303)
     if len(senha) > 20:
         flash("A senha pode ter no máximo 20 caracteres", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index"),open="novoUsuario", code=303)
     
     if senha.isdigit():
         flash("A senha não pode conter apenas números", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index"),open="novoUsuario", code=303)
 
     senha_hash = generate_password_hash(senha)
 
@@ -43,10 +43,10 @@ def novo_usuario():
         db.session.rollback()
 
         flash("Esse e-mail já foi cadastrado.", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="novoUsuario"), code=303)
 
     flash("Usúario criado com sucesso!", "success")
-    return redirect(url_for("index"), code=303)
+    return redirect(url_for("index",open="novoUsuario"), code=303)
 
 @usuario_bp.route("/deletar", methods=["POST"])
 def deletar_usuario():
@@ -54,17 +54,17 @@ def deletar_usuario():
 
     if not id:
         flash("ID do Usúario é obrigatório", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index",open="deletarUsuario"), code=303)
     
     try:
         id = int(id)
     except (TypeError, ValueError):
         flash("ID deve ser um número!", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index",open="deletarUsuario"), code=303)
 
     if id <= 0:
         flash("ID inválido", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index",open="deletarUsuario"), code=303)
     
     #antes
     #usuario = Usuario.query.get(id)
@@ -74,13 +74,13 @@ def deletar_usuario():
 
     if not usuario:
         flash("Usúario não encontrado no sistema", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index",open="deletarUsuario"), code=303)
 
     db.session.delete(usuario)
     db.session.commit()
 
     flash("Usúario deletado com sucesso!", "success")
-    return redirect(url_for("index"), code=303)
+    return redirect(url_for("index",open="deletarUsuario"), code=303)
 
 @usuario_bp.route("/listar", methods=["GET"])
 def listar_usuarios():
