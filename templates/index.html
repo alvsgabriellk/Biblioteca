@@ -566,16 +566,27 @@ tr:hover td {
       <div id="novoUsuario" class="card">
         <div class="card-title">Cadastrar novo usuário</div>
         <div class="card-desc">Preencha os dados do usuário para liberar acesso ao sistema.</div>
-        <div class="form-row">
-          <div class="form-group"><label>Nome completo</label><input placeholder="Ex: João da Silva"></div>
-          <div class="form-group"><label>E-mail</label><input type="email" placeholder="joao@email.com"></div>
+        <form action="/usuarios/novo" method="POST">
+          <div class="form-row">
+          <div class="form-group">
+            <label>Nome completo</label>
+            <input type="text" placeholder="Ex: João da Silva" name="nome" required>
+          </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" placeholder="joao@email.com" name="email" required>
+          </div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>CPF</label><input placeholder="000.000.000-00"></div>
-          <div class="form-group"><label>Senha</label><input type="password" placeholder="••••••••"></div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" placeholder="••••••••" name="senha" required>
+          </div>
         </div>
         <div class="divider"></div>
-        <button class="btn-primary">Salvar usuário</button>
+        <button type="submit" class="btn-primary">Salvar usuário</button>
+        </form>
+        
       </div>
 
       <div id="novoLivro" class="card">
