@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from models import Usuario, Livro, Emprestimo, StatusEmprestimo
 from routes import usuario_bp, livro_bp
+from services import get_totais_dashboard
 
 load_dotenv()
 
@@ -16,7 +17,8 @@ db.init_app(app)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    dados_totais = get_totais_dashboard()
+    return render_template("index.html", **dados_totais)
 
 
 app.register_blueprint(usuario_bp, url_prefix="/usuarios")
