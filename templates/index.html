@@ -1,170 +1,699 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca</title>
-    <style>
-.toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 12px 20px;
-    border-radius: 6px;
-    color: #fff;
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: 0.3s;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Gerenciamento de Biblioteca</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.toast.show {
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #f0ece4;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.wrap {
+  display: flex;
+  height: 680px;
+  width: 1100px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 0.5px solid #d6d0c8;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.sidebar {
+  width: 270px;
+  background: #1a1a2e;
+  color: #e2d9c8;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 24px 20px 16px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.lib-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.lib-icon {
+  width: 36px;
+  height: 36px;
+  background: #c9a96e;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lib-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: #1a1a2e;
+}
+
+.lib-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e2d9c8;
+  line-height: 1.3;
+}
+
+.lib-subtitle {
+  font-size: 11px;
+  color: #8a8278;
+  margin-top: 2px;
+}
+
+.nav-section {
+  padding: 12px 12px 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b6560;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 13px;
+  color: #b8b0a4;
+  border-left: 2px solid transparent;
+}
+
+.nav-item:hover {
+  background: rgba(201, 169, 110, 0.08);
+  color: #e2d9c8;
+}
+
+.nav-item.active {
+  background: rgba(201, 169, 110, 0.12);
+  color: #c9a96e;
+  border-left-color: #c9a96e;
+}
+
+.nav-item svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+.nav-item.active svg {
+  opacity: 1;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.06);
+  font-size: 11px;
+  color: #6b6560;
+}
+
+.main {
+  flex: 1;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  background: #ffffff;
+  border-bottom: 0.5px solid #e5e7eb;
+  padding: 0 24px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.page-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.page-breadcrumb {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.badge-books {
+  background: #e8f0fe;
+  color: #1a56a0;
+}
+
+.badge-users {
+  background: #e6f4ea;
+  color: #1a6e35;
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+.card {
+  background: #ffffff;
+  border: 0.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.card.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
     opacity: 1;
     transform: translateY(0);
+  }
 }
 
-.success { background: green; }
-.error { background: red; }
-    </style>
+.card-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.divider {
+  height: 0.5px;
+  background: #e5e7eb;
+  margin: 20px 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.form-group input {
+  padding: 9px 12px;
+  border: 0.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  background: #f9fafb;
+  color: #111827;
+  outline: none;
+  transition: border 0.15s;
+}
+
+.form-group input:focus {
+  border-color: #c9a96e;
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+}
+
+.btn-primary {
+  padding: 9px 20px;
+  background: #1a1a2e;
+  color: #c9a96e;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-primary:hover {
+  background: #2a2a4a;
+}
+
+.btn-danger {
+  padding: 9px 20px;
+  background: #fff5f5;
+  color: #a32d2d;
+  border: 0.5px solid #f7c1c1;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #f7c1c1;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.stat-sub {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  padding: 9px 12px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  border-bottom: 0.5px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+td {
+  padding: 10px 12px;
+  border-bottom: 0.5px solid #e5e7eb;
+  color: #111827;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background: #f9fafb;
+}
+
+.status-pill {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.status-active {
+  background: #e6f4ea;
+  color: #1a6e35;
+}
+
+.status-pending {
+  background: #fef3e2;
+  color: #854f0b;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e8f0fe;
+  color: #1a56a0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.home-card {
+  background: #ffffff;
+  border: 0.5px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.home-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.home-card h4 {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 3px;
+}
+
+.home-card p {
+  font-size: 12px;
+  color: #6b7280;
+}
+</style>
 </head>
 <body>
-    <h1>Sistema de Gerenciamento de Livros</h1>
 
-    <!-- INICIO USUARIO CADASTRO -->
-    <h3>Novo Usuário</h3>
-    <form action="/usuarios/novo" method="POST">
-        <label>Nome:</label><br>
-        <input type="text" name="nome" required><br><br>
+<div class="wrap">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="lib-logo">
+        <div class="lib-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 19V6.5L12 3l8 3.5V19H4zm2-2h12V7.6l-6-2.6-6 2.6V17zm3-3h6v-2H9v2zm0-4h6V8H9v2z"/></svg>
+        </div>
+        <div>
+          <div class="lib-title">Sistema de Gerenciamento<br>de Biblioteca</div>
+        </div>
+      </div>
+      <div class="lib-subtitle">Painel administrativo</div>
+    </div>
 
-        <label>Email:</label><br>
-        <input type="text" name="email" required><br><br>
+    <div class="nav-section">Principal</div>
+    <div class="nav-item active" onclick="show('home',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Visão geral
+    </div>
 
-        <label>Senha:</label><br>
-        <input type="password" name="senha" required><br><br>
-        
-        <button type="submit">Salvar</button><br>
-        <hr>
-    </form>
-    <!-- FIM USUARIO CADASTRADO -->
+    <div class="nav-section">Usuários</div>
+    <div class="nav-item" onclick="show('novoUsuario',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z"/></svg>
+      Novo usuário
+    </div>
+    <div class="nav-item" onclick="show('verUsuarios',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.7 0 2.99-1.3 2.99-3S17.7 5 16 5c-1.7 0-3 1.3-3 3s1.3 3 3 3zm-8 0c1.7 0 2.99-1.3 2.99-3S9.7 5 8 5C6.3 5 5 6.3 5 8s1.3 3 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5c0-2.3-4.7-3.5-7-3.5zm8 0c-.3 0-.6 0-1 .1 1.2.8 2 1.9 2 3.4V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z"/></svg>
+      Ver usuários
+    </div>
+    <div class="nav-item" onclick="show('deletarUsuario',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+      Remover usuário
+    </div>
 
+    <div class="nav-section">Acervo</div>
+    <div class="nav-item" onclick="show('novoLivro',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+      Novo livro
+    </div>
+    <div class="nav-item" onclick="show('verLivros',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 16H8v-2h8v2zm0-4H8v-2h8v2zm0-4H8V8h8v2z"/></svg>
+      Ver acervo
+    </div>
+    <div class="nav-item" onclick="show('deletarLivro',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+      Remover livro
+    </div>
 
-    <!-- INICIO DELETAR USUARIO -->
-    <h3>Deletar Usuário</h3>
-    <form action="/usuarios/deletar" method="POST">
-        <label>ID:</label><br>
-        <input type="text" name="usuario_id" required><br><br>
+    <div class="nav-section">Empréstimos</div>
+    <div class="nav-item" onclick="show('emprestimo',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+      Novo empréstimo
+    </div>
+    <div class="nav-item" onclick="show('devolver',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z"/></svg>
+      Devolver livro
+    </div>
+    <div class="nav-item" onclick="show('emprestados',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+      Em andamento
+    </div>
 
-        <button type="submit">Deletar</button><br>
-        <hr>
-    </form>
-    <!-- FIM DELETAR USUARIO -->
-     
-    <!-- INICIO LIVRO CADASTRO -->
-    <h3>Novo Livro</h3>
-    <form action="/livros/novo" method="POST">
-        <label>Titulo:</label><br>
-        <input type="text" name="titulo" required><br><br>
+    <div class="sidebar-footer">Biblioteca Municipal · v2.0</div>
+  </div>
 
-        <label>Autor:</label><br>
-        <input type="text" name="autor" required><br><br>
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="page-title">Visão geral</div>
+        <div class="page-breadcrumb">Sistema de Gerenciamento de Biblioteca</div>
+      </div>
+      <div class="badges">
+        <span class="badge badge-books">{{total_livros}} livros</span>
+        <span class="badge badge-users">{{total_usuarios}} usuários</span>
+      </div>
+    </div>
 
-        <label>Quantidade:</label><br>
-        <input type="text" name="quantidade_total" required><br><br>
+    <div class="content-area">
 
-        <button type="submit">Salvar</button>
-        <hr>
-    </form>
-    <!-- FIM LIVRO CADASTRO -->
-
-    <!-- INICIO DELETAR LIVRO -->
-     <h3>Deletar Livro</h3>
-     <form action="/livros/deletar" method="POST">
-        <label>ID:</label><br>
-        <input type="text" name="livro_id" required><br><br>
-
-        <button type="submit">Deletar</button>
-        <hr>
-     </form>
-
-    <!-- INICIO LISTA DE USUARIOS -->
-    <h3>Lista de Usuários:</h3>
-    <ul>
-        {% for usuario in usuarios %}
-            {% if usuario %}
-            <li>
-                ID: {{usuario.id}}<br>
-                Nome: {{usuario.nome}}<br>
-                Email: {{usuario.email}}<br>
-            </li>
-            <hr>
-            {% endif %}
-        {% endfor %}
-    </ul>
-
-    {% if request.path == "/" %}
-        <form action="/usuarios/listar" method="GET">
-            <button type="submit">Ver usúarios</button>
-        </form>
-    
-    {% elif request.path == "/usuarios/listar" %}
-        <form action="/" method="GET">
-            <button type="submit">Fechar lista</button>
-        </form>
-    {% endif %}
-    <!-- FIM LISTA DE USUARIOS -->
-
-
-    <!-- INICIO LISTA LIVROS -->
-     <h3>Lista de Livros:</h3>
-     <ul>
-        {% for livro in livros %}
-            {% if livro %}
-        <li>
-            ID: {{livro.id}}<br>
-            Titulo: {{livro.titulo}}<br>
-            Autor: {{livro.autor}}<br>
-            Disponiveis: {{livro.quantidade_disponivel}}<br>
-            DATA_CRIADO: {{livro.data_criado}}<br>
-        </li>
-        <hr>
-            {% endif %}
-        {% endfor %}    
-     </ul>
-
-     {% if request.path == "/" %}
-     <form action="/livros/listar">
-        <button type="submit">Ver livros</button>
-     </form>
-     {% endif %}
-
-     {% if request.path == "/livros/listar" %}
-     <form action="/">
-        <button type="submit">Fechar lista</button>
-     </form>
-     {% endif %}
-     <!-- FIM LISTA LIVROS -->
-
-
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <div class="toast {{category}}">
-                {{message}}
+      <div id="home" class="card active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total de livros</div>
+            <div class="stat-value" style="color:#1a56a0">142</div>
+            <div class="stat-sub">94 disponíveis</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Usuários ativos</div>
+            <div class="stat-value" style="color:#1a6e35">38</div>
+            <div class="stat-sub">desde jan/2024</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Empréstimos ativos</div>
+            <div class="stat-value" style="color:#854f0b">12</div>
+            <div class="stat-sub">3 com atraso</div>
+          </div>
+        </div>
+        <div class="home-grid">
+          <div class="home-card">
+            <div class="home-card-icon" style="background:#e8f0fe">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#1a56a0"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
             </div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
+            <h4>Último empréstimo</h4>
+            <p>Dom Casmurro — João Silva</p>
+            <p style="margin-top:4px;font-size:11px;color:#9ca3af">Hoje, 09:41</p>
+          </div>
+          <div class="home-card">
+            <div class="home-card-icon" style="background:#fef3e2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#854f0b"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            </div>
+            <h4>Devoluções pendentes</h4>
+            <p>3 livros em atraso</p>
+            <p style="margin-top:4px;font-size:11px;color:#854f0b">Verificar agora</p>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:10px;font-weight:500">Atividade recente</div>
+        <table>
+          <tr><th>Livro</th><th>Usuário</th><th>Ação</th><th>Data</th></tr>
+          <tr><td>Dom Casmurro</td><td><span class="avatar">JS</span>João Silva</td><td><span class="status-pill status-active">Emprestado</span></td><td>Hoje</td></tr>
+          <tr><td>1984</td><td><span class="avatar" style="background:#e6f4ea;color:#1a6e35">MA</span>Maria A.</td><td><span class="status-pill status-pending">Pendente</span></td><td>Ontem</td></tr>
+          <tr><td>O Alquimista</td><td><span class="avatar" style="background:#fef3e2;color:#854f0b">CR</span>Carlos R.</td><td><span class="status-pill status-active">Devolvido</span></td><td>06/04</td></tr>
+        </table>
+      </div>
+
+      <div id="novoUsuario" class="card">
+        <div class="card-title">Cadastrar novo usuário</div>
+        <div class="card-desc">Preencha os dados do usuário para liberar acesso ao sistema.</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nome completo</label><input placeholder="Ex: João da Silva"></div>
+          <div class="form-group"><label>E-mail</label><input type="email" placeholder="joao@email.com"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>CPF</label><input placeholder="000.000.000-00"></div>
+          <div class="form-group"><label>Senha</label><input type="password" placeholder="••••••••"></div>
+        </div>
+        <div class="divider"></div>
+        <button class="btn-primary">Salvar usuário</button>
+      </div>
+
+      <div id="novoLivro" class="card">
+        <div class="card-title">Adicionar livro ao acervo</div>
+        <div class="card-desc">Registre um novo título na coleção da biblioteca.</div>
+        <div class="form-row">
+          <div class="form-group"><label>Título</label><input placeholder="Nome do livro"></div>
+          <div class="form-group"><label>Autor</label><input placeholder="Nome do autor"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>ISBN</label><input placeholder="978-0-000-00000-0"></div>
+          <div class="form-group"><label>Quantidade de exemplares</label><input type="number" placeholder="1"></div>
+        </div>
+        <div class="form-group"><label>Categoria</label><input placeholder="Ex: Romance, Ficção científica, Técnico..."></div>
+        <div class="divider"></div>
+        <button class="btn-primary">Adicionar ao acervo</button>
+      </div>
+
+      <div id="verUsuarios" class="card">
+        <div class="card-title">Usuários cadastrados</div>
+        <div class="card-desc">Lista de todos os usuários com acesso ao sistema.</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Status</th><th>Cadastro</th></tr>
+            <tr><td>#001</td><td><span class="avatar">JS</span>João Silva</td><td>joao@email.com</td><td><span class="status-pill status-active">Ativo</span></td><td>10/01/2024</td></tr>
+            <tr><td>#002</td><td><span class="avatar" style="background:#e6f4ea;color:#1a6e35">MA</span>Maria Aparecida</td><td>maria@email.com</td><td><span class="status-pill status-active">Ativo</span></td><td>15/01/2024</td></tr>
+            <tr><td>#003</td><td><span class="avatar" style="background:#fef3e2;color:#854f0b">CR</span>Carlos Ribeiro</td><td>carlos@email.com</td><td><span class="status-pill status-pending">Suspenso</span></td><td>02/02/2024</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div id="verLivros" class="card">
+        <div class="card-title">Acervo da biblioteca</div>
+        <div class="card-desc">Todos os títulos cadastrados e sua disponibilidade.</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>ID</th><th>Título</th><th>Autor</th><th>Total</th><th>Disponível</th><th>Status</th></tr>
+            <tr><td>#001</td><td>Dom Casmurro</td><td>Machado de Assis</td><td>5</td><td>4</td><td><span class="status-pill status-active">Disponível</span></td></tr>
+            <tr><td>#002</td><td>1984</td><td>George Orwell</td><td>3</td><td>0</td><td><span class="status-pill status-pending">Esgotado</span></td></tr>
+            <tr><td>#003</td><td>O Alquimista</td><td>Paulo Coelho</td><td>8</td><td>7</td><td><span class="status-pill status-active">Disponível</span></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div id="deletarUsuario" class="card">
+        <div class="card-title">Remover usuário</div>
+        <div class="card-desc">Informe o ID do usuário que deseja remover do sistema. Esta ação não pode ser desfeita.</div>
+        <div class="form-group" style="max-width:280px"><label>ID do usuário</label><input placeholder="#001"></div>
+        <div class="divider"></div>
+        <button class="btn-danger">Remover usuário</button>
+      </div>
+
+      <div id="deletarLivro" class="card">
+        <div class="card-title">Remover livro</div>
+        <div class="card-desc">Informe o ID do livro que deseja retirar do acervo. Certifique-se de que não há exemplares emprestados.</div>
+        <div class="form-group" style="max-width:280px"><label>ID do livro</label><input placeholder="#001"></div>
+        <div class="divider"></div>
+        <button class="btn-danger">Remover do acervo</button>
+      </div>
+
+      <div id="emprestimo" class="card">
+        <div class="card-title">Registrar empréstimo</div>
+        <div class="card-desc">Associe um livro a um usuário para registrar o empréstimo.</div>
+        <div class="form-row">
+          <div class="form-group"><label>ID do usuário</label><input placeholder="#001"></div>
+          <div class="form-group"><label>ID do livro</label><input placeholder="#001"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Data de empréstimo</label><input type="date"></div>
+          <div class="form-group"><label>Prazo de devolução</label><input type="date"></div>
+        </div>
+        <div class="divider"></div>
+        <button class="btn-primary">Confirmar empréstimo</button>
+      </div>
+
+      <div id="devolver" class="card">
+        <div class="card-title">Registrar devolução</div>
+        <div class="card-desc">Informe o ID do livro devolvido para atualizar o acervo.</div>
+        <div class="form-row">
+          <div class="form-group"><label>ID do livro</label><input placeholder="#001"></div>
+          <div class="form-group"><label>ID do usuário</label><input placeholder="#001"></div>
+        </div>
+        <div class="divider"></div>
+        <button class="btn-primary">Confirmar devolução</button>
+      </div>
+
+      <div id="emprestados" class="card">
+        <div class="card-title">Empréstimos em andamento</div>
+        <div class="card-desc">Livros atualmente fora do acervo e seus respectivos prazos.</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>ID</th><th>Livro</th><th>Usuário</th><th>Empréstimo</th><th>Devolução</th><th>Status</th></tr>
+            <tr><td>#001</td><td>Dom Casmurro</td><td><span class="avatar">JS</span>João</td><td>01/04</td><td>15/04</td><td><span class="status-pill status-active">No prazo</span></td></tr>
+            <tr><td>#002</td><td>1984</td><td><span class="avatar" style="background:#fef3e2;color:#854f0b">MA</span>Maria</td><td>20/03</td><td>03/04</td><td><span class="status-pill status-pending">Atrasado</span></td></tr>
+            <tr><td>#003</td><td>Grande Sertão</td><td><span class="avatar" style="background:#e6f4ea;color:#1a6e35">CR</span>Carlos</td><td>05/04</td><td>19/04</td><td><span class="status-pill status-active">No prazo</span></td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script>
-const toasts = document.querySelectorAll(".toast");
-
-toasts.forEach((toast) => {
-    setTimeout(() => toast.classList.add("show"), 100);
-
-    setTimeout(() => {
-        toast.classList.remove("show");
-    }, 3000);
-});
+const titles = {
+  home:'Visão geral',novoUsuario:'Novo usuário',novoLivro:'Novo livro',
+  verUsuarios:'Usuários',verLivros:'Acervo',deletarUsuario:'Remover usuário',
+  deletarLivro:'Remover livro',emprestimo:'Empréstimo',devolver:'Devolução',
+  emprestados:'Em andamento'
+};
+function show(id, el) {
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el) el.classList.add('active');
+  document.getElementById('page-title').textContent = titles[id]||id;
+}
 </script>
+
 </body>
 </html>
