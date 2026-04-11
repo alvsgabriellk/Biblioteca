@@ -760,10 +760,64 @@ tr:hover td {
         <div class="card-desc">Todos os títulos cadastrados e sua disponibilidade.</div>
         <div class="table-wrap">
           <table>
-            <tr><th>ID</th><th>Título</th><th>Autor</th><th>Total</th><th>Disponível</th><th>Status</th></tr>
-            <tr><td>#001</td><td>Dom Casmurro</td><td>Machado de Assis</td><td>5</td><td>4</td><td><span class="status-pill status-active">Disponível</span></td></tr>
-            <tr><td>#002</td><td>1984</td><td>George Orwell</td><td>3</td><td>0</td><td><span class="status-pill status-pending">Esgotado</span></td></tr>
-            <tr><td>#003</td><td>O Alquimista</td><td>Paulo Coelho</td><td>8</td><td>7</td><td><span class="status-pill status-active">Disponível</span></td></tr>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Autor</th>
+              <th>Total</th>
+              <th>Disponível</th>
+              <th>Status</th>
+            </tr>
+
+            {% for livro in livros %}
+              {% if livro %}
+                <tr>
+                  <td>
+                    #{{livro.id}}
+                  </td>
+                  <td>
+                    {{livro.titulo}}
+                  </td>
+                  <td>
+                    {{livro.autor}}
+                  </td>
+                  <td>
+                    {{livro.quantidade_total}}
+                  </td>
+                  <td>
+                    {{livro.quantidade_disponivel}}
+                  </td>
+                  <td>
+                    {% if livro.quantidade_disponivel > 0 %}
+                      <span class="status-pill status-active">Disponível</span>
+                    {% else %}
+                      <span class="status-pill status-pending">Esgotado</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+
+            <tr>
+              <td>
+                #0100
+              </td>
+                <td>
+                  Dom Casmurro
+                </td>
+                  <td>
+                    Machado de Assis
+                  </td>
+                  <td>
+                    5
+                  </td>
+                  <td>
+                    4
+                  </td>
+                  <td>
+                    <span class="status-pill status-active">Disponível</span>
+                  </td>
+                </tr>
           </table>
         </div>
       </div>
