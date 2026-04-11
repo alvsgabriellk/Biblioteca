@@ -1,1 +1,2 @@
 from .dashboard_service import get_totais_dashboard
+from .dashboard_service import dados_usuario
