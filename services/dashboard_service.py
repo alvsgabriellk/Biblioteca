@@ -23,3 +23,24 @@ def dados_usuario():
         "usuarios": usuarios
     }
 
+
+
+
+def data_primeiro_criado():
+    primeiro_usuario = db.session.execute(select(Usuario).order_by(Usuario.data_criado.asc())).scalars().first()
+
+    meses = [
+    "janeiro","fevereiro","março","abril","maio","junho",
+    "julho","agosto","setembro","outubro","novembro","dezembro"
+    ]
+
+    if primeiro_usuario:
+        data = primeiro_usuario.data_criado
+        desde = f"{meses[data.month - 1]}/{data.year}"
+    else:
+        desde = "-"
+
+    return {
+        "desde": desde
+    }
+
