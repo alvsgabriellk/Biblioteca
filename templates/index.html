@@ -726,10 +726,37 @@ tr:hover td {
         <div class="card-desc">Lista de todos os usuários com acesso ao sistema.</div>
         <div class="table-wrap">
           <table>
-            <tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Status</th><th>Cadastro</th></tr>
-            <tr><td>#001</td><td><span class="avatar">JS</span>João Silva</td><td>joao@email.com</td><td><span class="status-pill status-active">Ativo</span></td><td>10/01/2024</td></tr>
-            <tr><td>#002</td><td><span class="avatar" style="background:#e6f4ea;color:#1a6e35">MA</span>Maria Aparecida</td><td>maria@email.com</td><td><span class="status-pill status-active">Ativo</span></td><td>15/01/2024</td></tr>
-            <tr><td>#003</td><td><span class="avatar" style="background:#fef3e2;color:#854f0b">CR</span>Carlos Ribeiro</td><td>carlos@email.com</td><td><span class="status-pill status-pending">Suspenso</span></td><td>02/02/2024</td></tr>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Cadastro</th>
+            </tr>
+            <tr>
+              <td>
+                #01
+              </td>
+              <td>
+                <span class="avatar"></span>
+                <span class="nome">Cauã Gabriell</span>
+              </td>
+              <td>
+                joao@email.com
+              </td>
+              <td>
+                10/01/2024
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                #02
+              </td>
+              <td>
+                <span class="avatar"></span>
+                <span class="nome">Alice Jaciara</span>
+              </td>
+            </tr>
           </table>
         </div>
       </div>
@@ -863,6 +890,43 @@ if (flashDataEl) {
   });
 }
 </script>
+
+<script>
+        function gerarIniciais(nome) {
+            if (!nome) return "";
+
+            const partes = nome.trim().split(" ").filter(p => p);
+
+            if (partes.length === 1) {
+                return partes[0][0].toUpperCase();
+            }
+
+            return (partes[0][0] + partes[1][0]).toUpperCase();
+        }
+
+        function corPorNome(nome) {
+            let hash = 0;
+            for (let i = 0; i < nome.length; i++) {
+                hash = nome.charCodeAt(i) + ((hash << 5) - hash);
+            }
+
+            const hue = hash % 360;
+
+            return `hsl(${hue}, 20%, 75% `
+        }
+
+        document.querySelectorAll("td").forEach(td => {
+            const nomeSpan = td.querySelector(".nome");
+            const avatar = td.querySelector(".avatar");
+
+            if (nomeSpan && avatar) {
+                const nome = nomeSpan.textContent.trim();
+
+                avatar.textContent = gerarIniciais(nome);
+                avatar.style.background = corPorNome(nome);
+            }
+        });
+    </script>
 
 
 <script>
