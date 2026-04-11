@@ -578,14 +578,14 @@ tr:hover td {
       Remover usuário
     </div>
 
-    <div class="nav-section">Acervo</div>
+    <div class="nav-section">Biblioteca</div>
     <div class="nav-item" onclick="show('novoLivro',this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
       Novo livro
     </div>
     <div class="nav-item" onclick="show('verLivros',this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 16H8v-2h8v2zm0-4H8v-2h8v2zm0-4H8V8h8v2z"/></svg>
-      Ver acervo
+      Ver biblioteca
     </div>
     <div class="nav-item" onclick="show('deletarLivro',this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
@@ -606,7 +606,7 @@ tr:hover td {
       Em andamento
     </div>
 
-    <div class="sidebar-footer">Biblioteca Municipal · v2.0</div>
+    <div class="sidebar-footer">Biblioteca portfólio · v1.0</div>
   </div>
 
   <div class="main">
@@ -696,7 +696,7 @@ tr:hover td {
       </div>
 
       <div id="novoLivro" class="card">
-        <div class="card-title">Adicionar livro ao acervo</div>
+        <div class="card-title">Adicionar livro a biblioteca</div>
         <div class="card-desc">Registre um novo título na coleção da biblioteca.</div>
         <form action="/livros/novo" method="POST">
         <div class="form-row">
@@ -756,7 +756,7 @@ tr:hover td {
       </div>
 
       <div id="verLivros" class="card">
-        <div class="card-title">Acervo da biblioteca</div>
+        <div class="card-title">Registros da biblioteca</div>
         <div class="card-desc">Todos os títulos cadastrados e sua disponibilidade.</div>
         <div class="table-wrap">
           <table>
