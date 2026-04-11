@@ -698,18 +698,28 @@ tr:hover td {
       <div id="novoLivro" class="card">
         <div class="card-title">Adicionar livro ao acervo</div>
         <div class="card-desc">Registre um novo título na coleção da biblioteca.</div>
+        <form action="/livros/novo" method="POST">
         <div class="form-row">
-          <div class="form-group"><label>Título</label><input placeholder="Nome do livro"></div>
-          <div class="form-group"><label>Autor</label><input placeholder="Nome do autor"></div>
+          <div class="form-group">
+            <label>Título</label>
+            <input type="text" placeholder="Nome do livro" name="titulo" required>
+          </div>
+          <div class="form-group">
+            <label>Autor</label>
+            <input type="text" placeholder="Nome do autor" name="autor" required>
+          </div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>ISBN</label><input placeholder="978-0-000-00000-0"></div>
-          <div class="form-group"><label>Quantidade de exemplares</label><input type="number" placeholder="1"></div>
+          <div class="form-group">
+            <label>Quantidade de livros</label>
+            <input type="text" placeholder="1" name="quantidade_total" required>
+          </div>
         </div>
-        <div class="form-group"><label>Categoria</label><input placeholder="Ex: Romance, Ficção científica, Técnico..."></div>
         <div class="divider"></div>
-        <button class="btn-primary">Adicionar ao acervo</button>
+        <button type="submit" class="btn-primary">Adicionar a biblioteca</button>
       </div>
+        </form>
+        
 
       <div id="verUsuarios" class="card">
         <div class="card-title">Usuários cadastrados</div>
@@ -752,10 +762,14 @@ tr:hover td {
 
       <div id="deletarLivro" class="card">
         <div class="card-title">Remover livro</div>
-        <div class="card-desc">Informe o ID do livro que deseja retirar do acervo. Certifique-se de que não há exemplares emprestados.</div>
-        <div class="form-group" style="max-width:280px"><label>ID do livro</label><input placeholder="#001"></div>
+        <div class="card-desc">Informe o ID do livro que deseja retirar da biblioteca. Certifique-se de que não há livros emprestados.</div>
+        <form action="/livros/deletar" method="POST">
+          <div class="form-group" style="max-width:280px">
+          <label>ID do livro</label>
+          <input type="text" placeholder="#01" name="livro_id" required></div>
         <div class="divider"></div>
-        <button class="btn-danger">Remover do acervo</button>
+        <button type="submit" class="btn-danger">Remover da biblioteca</button>
+        </form>
       </div>
 
       <div id="emprestimo" class="card">
