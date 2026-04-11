@@ -732,31 +732,25 @@ tr:hover td {
               <th>E-mail</th>
               <th>Cadastro</th>
             </tr>
-            <tr>
-              <td>
-                #01
-              </td>
-              <td>
-                <span class="avatar"></span>
-                <span class="nome">Cauã Gabriell</span>
-              </td>
-              <td>
-                joao@email.com
-              </td>
-              <td>
-                10/01/2024
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                #02
-              </td>
-              <td>
-                <span class="avatar"></span>
-                <span class="nome">Alice Jaciara</span>
-              </td>
-            </tr>
+            {% for usuario in usuarios %}
+              {% if usuario %}
+                <tr>
+                  <td>
+                    #{{usuario.id}}
+                  </td>
+                  <td>
+                    <span class="avatar"></span>
+                    <span class="nome">{{usuario.nome}}</span>
+                  </td>
+                  <td>
+                    {{usuario.email}}
+                  </td>
+                  <td>
+                    {{usuario.data_criado.strftime("%d/%m/%Y")}}
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
           </table>
         </div>
       </div>
@@ -910,9 +904,9 @@ if (flashDataEl) {
                 hash = nome.charCodeAt(i) + ((hash << 5) - hash);
             }
 
-            const hue = hash % 360;
+            const hue = hash % 560;
 
-            return `hsl(${hue}, 20%, 75% `
+            return `hsl(${hue}, 35%, 70% `
         }
 
         document.querySelectorAll("td").forEach(td => {
