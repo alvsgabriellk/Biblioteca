@@ -2,3 +2,4 @@ from .dashboard_service import get_totais_dashboard
 from .dashboard_service import dados_usuario
 from .dashboard_service import data_primeiro_criado
 from .dashboard_service import totais_livros_quantidade
+from .dashboard_service import dados_livro
