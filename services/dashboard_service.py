@@ -23,6 +23,15 @@ def dados_usuario():
         "usuarios": usuarios
     }
 
+def dados_livro():
+    livros = db.session.execute(
+        select(Livro)
+    ).scalars().all()
+
+    return {
+        "livros": livros
+    }
+
 
 
 
