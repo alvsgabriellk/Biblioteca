@@ -15,3 +15,11 @@ def get_totais_dashboard():
         "total_livros": total_livros or 0,
         "total_usuarios": total_usuarios or 0
     }
+
+def dados_usuario():
+    usuarios = db.session.execute(select(Usuario)).scalars().all()
+
+    return {
+        "usuarios": usuarios
+    }
+
