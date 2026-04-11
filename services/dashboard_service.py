@@ -44,3 +44,15 @@ def data_primeiro_criado():
         "desde": desde
     }
 
+def totais_livros_quantidade():
+    # antes
+    #total = db.session.execute(select(func.count()).select_from(Livro.quantidade_total)).scalar()
+
+    # depois
+    total = db.session.execute(
+        select(func.sum(Livro.quantidade_total))
+        ).scalar()
+
+    return {
+        "total_quantidade_livro": total
+    }
