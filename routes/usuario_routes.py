@@ -42,10 +42,10 @@ def novo_usuario():
     except IntegrityError:
         db.session.rollback()
 
-        flash("Esse e-mail já foi cadastrado.", "error")
+        flash("Esse e-mail já foi cadastrado", "error")
         return redirect(url_for("index", open="novoUsuario"), code=303)
 
-    flash("Usúario criado com sucesso!", "success")
+    flash("Usuário criado com sucesso!", "success")
     return redirect(url_for("index",open="novoUsuario"), code=303)
 
 @usuario_bp.route("/deletar", methods=["POST"])
@@ -53,13 +53,13 @@ def deletar_usuario():
     id = request.form.get("usuario_id")
 
     if not id:
-        flash("ID do Usúario é obrigatório", "error")
+        flash("ID do Usuário é obrigatório", "error")
         return redirect(url_for("index",open="deletarUsuario"), code=303)
     
     try:
         id = int(id)
     except (TypeError, ValueError):
-        flash("ID deve ser um número!", "error")
+        flash("ID deve ser um número", "error")
         return redirect(url_for("index",open="deletarUsuario"), code=303)
 
     if id <= 0:
@@ -73,13 +73,13 @@ def deletar_usuario():
     usuario = db.session.get(Usuario, id)
 
     if not usuario:
-        flash("Usúario não encontrado no sistema", "error")
+        flash("Usuário não encontrado no sistema", "error")
         return redirect(url_for("index",open="deletarUsuario"), code=303)
 
     db.session.delete(usuario)
     db.session.commit()
 
-    flash("Usúario deletado com sucesso!", "success")
+    flash("Usuário deletado com sucesso!", "success")
     return redirect(url_for("index",open="deletarUsuario"), code=303)
 
 @usuario_bp.route("/listar", methods=["GET"])
@@ -95,7 +95,7 @@ def listar_usuarios():
     #.all transforma em lista
 
     if not usuarios:
-        flash("Nenhum usúario encontrado", "error")
+        flash("Nenhum usuário encontrado", "error")
         return redirect(url_for("index"), code=303)
 
     return render_template("index.html", usuarios=usuarios), 200
