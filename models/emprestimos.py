@@ -22,4 +22,7 @@ class Emprestimo(db.Model):
         default=StatusEmprestimo.EM_ANDAMENTO,
         nullable=False
     )
+
+    livro = db.relationship("Livro")
+    usuario = db.relationship("Usuario")
     
