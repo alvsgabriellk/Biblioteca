@@ -1,9 +1,8 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from models import Emprestimo, Livro, Usuario, StatusEmprestimo
 from database.databanco import db
-from sqlalchemy.exc import IntegrityError
 
-emprestimo_bp = Blueprint("/emprestimos", __name__)
+emprestimo_bp = Blueprint("emprestimos", __name__)
 
 @emprestimo_bp.route("/novo", methods=["POST"])
 def realizar_emprestimo():
@@ -19,10 +18,6 @@ def realizar_emprestimo():
         livro_id = int(livro_id)
     except (TypeError, ValueError):
         flash("ID tem que ser um número!", "error")
-        return redirect(url_for("index"), code=303)
-    
-    if not usuario_id.isdigit() or not livro_id.isdigit():
-        flash("ID deve ser um número!", "error")
         return redirect(url_for("index"), code=303)
     
     if usuario_id <= 0 or livro_id <= 0:
@@ -60,27 +55,23 @@ def realizar_emprestimo():
 
 @emprestimo_bp.route("/devolver", methods=["POST"])
 def devolver_livro():
-    livro_id = request.form.get("livro_id", "").strip()
+    emprestimo_id = request.form.get("emprestimo_id", "").strip()
 
-    if not livro_id:
-        flash("Todos os dados sõa obrigatórios", "error")
+    if not emprestimo_id:
+        flash("Todos os dados são obrigatórios", "error")
         return redirect(url_for("index"), code=303)
     
     try:
-        livro_id = int(livro_id)
+        emprestimo_id = int(emprestimo_id)
     except (TypeError, ValueError):
         flash("ID inválido", "error")
         return redirect(url_for("index"), code=303)
     
-    if not livro_id.isdigit():
-        flash("ID tem que ser um número!", "error")
-        return redirect(url_for("index"), code=303)
-    
-    if livro_id <= 0:
+    if emprestimo_id <= 0:
         flash("ID inválido", "error")
         return redirect(url_for("index"), code=303)
     
-    emprestimo = db.session.get(Emprestimo, livro_id)
+    emprestimo = db.session.get(Emprestimo, emprestimo_id)
 
     if not emprestimo:
         flash("Empréstimo não encontrado no sistema", "error")
@@ -90,15 +81,9 @@ def devolver_livro():
         flash("Livro já foi devolvido", "error")
         return redirect(url_for("index"), code=303)
     
-    livro = db.session.get(Livro, livro_id)
-
-    if not livro:
-        flash("Livro não encontrado no sistema", "error")
-        return redirect(url_for("index"), code=303)
-    
     emprestimo.status = StatusEmprestimo.DEVOLVIDO
     
-    livro.quantidade_disponivel += 1
+    emprestimo.livro.quantidade_disponivel += 1
 
     db.session.commit()
 
