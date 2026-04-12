@@ -829,27 +829,36 @@ tr:hover td {
       <div id="emprestimo" class="card">
         <div class="card-title">Registrar empréstimo</div>
         <div class="card-desc">Associe um livro a um usuário para registrar o empréstimo.</div>
+        <form action="/emprestimos/novo" method="POST">
         <div class="form-row">
-          <div class="form-group"><label>ID do usuário</label><input placeholder="#001"></div>
-          <div class="form-group"><label>ID do livro</label><input placeholder="#001"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Data de empréstimo</label><input type="date"></div>
-          <div class="form-group"><label>Prazo de devolução</label><input type="date"></div>
+            <div class="form-group">
+              <label>ID do usuário</label>
+              <input type="text" placeholder="1" name="usuario_id" required>
+            </div>
+            <div class="form-group">
+              <label>ID do livro</label>
+              <input type="text" placeholder="1" name="livro_id" required>
+            </div>
         </div>
         <div class="divider"></div>
-        <button class="btn-primary">Confirmar empréstimo</button>
+        <button type="submit" class="btn-primary">Confirmar empréstimo</button>
+          </form>
       </div>
 
       <div id="devolver" class="card">
         <div class="card-title">Registrar devolução</div>
-        <div class="card-desc">Informe o ID do livro devolvido para atualizar o acervo.</div>
-        <div class="form-row">
-          <div class="form-group"><label>ID do livro</label><input placeholder="#001"></div>
-          <div class="form-group"><label>ID do usuário</label><input placeholder="#001"></div>
+        <div class="card-desc">Informe o ID do empréstimo para devolver o livro para a biblioteca.</div>
+        <form action="/emprestimos/devolver" method="POST">
+          <div class="form-row">
+          <div class="form-group">
+            <label>ID do empréstimo</label>
+            <input type="text" placeholder="1" name="emprestimo_id" required>
+          </div>
         </div>
         <div class="divider"></div>
-        <button class="btn-primary">Confirmar devolução</button>
+        <button type="submit" class="btn-primary">Confirmar devolução</button>
+        </form>
+        
       </div>
 
       <div id="emprestados" class="card">
