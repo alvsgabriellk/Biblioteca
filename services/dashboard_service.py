@@ -1,3 +1,4 @@
+from datetime import date
 from sqlalchemy import select, func
 from database.databanco import db
 from models import Livro, Usuario, Emprestimo, StatusEmprestimo
@@ -32,8 +33,17 @@ def dados_livro():
         "livros": livros
     }
 
+def dados_emprestimo():
+    emprestimos = db.session.execute(
+        select(Emprestimo)
+    ).scalars().all()
 
+    hoje = date.today()
 
+    return {
+        "emprestimos": emprestimos,
+        "hoje": hoje
+    }
 
 def data_primeiro_criado():
     primeiro_usuario = db.session.execute(select(Usuario).order_by(Usuario.data_criado.asc())).scalars().first()
