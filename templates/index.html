@@ -525,6 +525,22 @@ tr:hover td {
 .toast.success .toast-progress { background: #1D9E75; }
 .toast.error   .toast-progress { background: #E24B4A; }
 
+.link-verificar {
+  text-decoration: none;
+  color: #556287;      
+}
+
+.link-verificar:hover {
+  text-decoration: underline;
+  color: #3a466b;
+}
+
+.link-verificar:active {
+  color: #1e40af;
+}
+
+
+
 @keyframes toastIn {
   from { opacity: 0; transform: translateX(60px) scale(0.95); }
   to   { opacity: 1; transform: translateX(0) scale(1); }
@@ -637,8 +653,8 @@ tr:hover td {
           </div>
           <div class="stat-card">
             <div class="stat-label">Empréstimos ativos</div>
-            <div class="stat-value" style="color:#854f0b">12</div>
-            <div class="stat-sub">3 com atraso</div>
+            <div class="stat-value" style="color:#854f0b">{{total_ativo}}</div>
+            <div class="stat-sub">{{total_atrasado}} com atraso</div>
           </div>
         </div>
         <div class="home-grid">
@@ -655,8 +671,8 @@ tr:hover td {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="#854f0b"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
             </div>
             <h4>Devoluções pendentes</h4>
-            <p>3 livros em atraso</p>
-            <p style="margin-top:4px;font-size:11px;color:#854f0b">Verificar agora</p>
+            <p>{{total_atrasado}} livros em atraso</p>
+            <p><a class="link-verificar" href="/?open=emprestados">Verificar agora</a></p>
           </div>
         </div>
         <div class="divider"></div>
@@ -861,7 +877,13 @@ tr:hover td {
         
       </div>
 
-      <div id="emprestados" class="card">
+      <div id="emprestados"
+      {% if open_section == "emprestados" %}
+      style="display:block;"
+      {% else %}
+      style="display: none;"
+      {% endif %}
+      class="card">
         <div class="card-title">Empréstimos em andamento</div>
         <div class="card-desc">Livros atualmente fora da biblioteca e seus respectivos prazos.</div>
         <div class="table-wrap">
@@ -945,6 +967,18 @@ if (flashDataEl) {
 
   flashMessages.forEach(([category, message]) => {
     showToast(category, message);
+  });
+}
+</script>
+
+<script>
+function irParaEmprestados() {
+  const el = document.getElementById("emprestados");
+
+  el.style.display = "block"; // caso esteja escondido
+
+  el.scrollIntoView({
+    behavior: "smooth"
   });
 }
 </script>
