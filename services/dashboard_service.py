@@ -91,3 +91,21 @@ def total_livros_disponiveis():
     return {
         "total_quantidade_disponivel": total
     }
+
+def total_emprestimos_ativos_e_atrasados():
+    total_ativo = db.session.execute(
+        select(func.count()).where(
+            Emprestimo.status == StatusEmprestimo.EM_ANDAMENTO
+        )
+    ).scalar()
+
+    total_atrasado = db.session.execute(
+        select(func.count()).where(
+            Emprestimo.status == StatusEmprestimo.NAO_DEVOLVIDO
+        )
+    ).scalar()
+
+    return {
+        "total_ativo": total_ativo,
+        "total_atrasado": total_atrasado
+    }
