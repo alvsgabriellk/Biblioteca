@@ -3,7 +3,7 @@ from database.databanco import db
 import os
 from dotenv import load_dotenv
 from models import Usuario, Livro, Emprestimo, StatusEmprestimo
-from routes import usuario_bp, livro_bp
+from routes import usuario_bp, livro_bp, emprestimo_bp
 from services import get_totais_dashboard, dados_usuario, data_primeiro_criado, totais_livros_quantidade, dados_livro
 
 load_dotenv()
@@ -27,6 +27,7 @@ def index():
 
 app.register_blueprint(usuario_bp, url_prefix="/usuarios")
 app.register_blueprint(livro_bp, url_prefix="/livros")
+app.register_blueprint(emprestimo_bp, url_prefix="/emprestimos")
 
 with app.app_context():
     db.create_all()
