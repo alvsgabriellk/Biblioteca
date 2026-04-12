@@ -109,3 +109,15 @@ def total_emprestimos_ativos_e_atrasados():
         "total_ativo": total_ativo,
         "total_atrasado": total_atrasado
     }
+
+def ultimo_emprestimo():
+    emprestimo = db.session.execute(
+        select(Emprestimo).order_by(
+            Emprestimo.data_emprestimo.desc(),
+            Emprestimo.id.desc()
+            )
+    ).scalars().first()
+
+    return {
+        "ultimo_emprestimo": emprestimo
+    }
