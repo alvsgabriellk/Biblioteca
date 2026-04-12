@@ -662,9 +662,18 @@ tr:hover td {
             <div class="home-card-icon" style="background:#e8f0fe">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="#1a56a0"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
             </div>
+            {% if ultimo_emprestimo %}
             <h4>Último empréstimo</h4>
-            <p>Dom Casmurro — João Silva</p>
-            <p style="margin-top:4px;font-size:11px;color:#9ca3af">Hoje, 09:41</p>
+            <p>
+              {{ultimo_emprestimo.livro.titulo}} — 
+              {{ultimo_emprestimo.usuario.nome}}
+            </p>
+            <p style="margin-top:4px;font-size:11px;color:#9ca3af">
+              {{ultimo_emprestimo.data_emprestimo.strftime("%d/%m")}}
+            </p>
+            {% else %}
+            <p>Nenhum empréstimo encontrado</p>
+            {% endif %}
           </div>
           <div class="home-card">
             <div class="home-card-icon" style="background:#fef3e2">
