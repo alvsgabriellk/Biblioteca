@@ -34,8 +34,15 @@ def dados_livro():
     }
 
 def dados_emprestimo():
+    # antes
+    #emprestimos = db.session.execute(
+     #   select(Emprestimo)
+    #).scalars().all()
+
     emprestimos = db.session.execute(
-        select(Emprestimo)
+        select(Emprestimo).where (
+            Emprestimo.status != StatusEmprestimo.DEVOLVIDO
+        )
     ).scalars().all()
 
     hoje = date.today()
@@ -74,4 +81,13 @@ def totais_livros_quantidade():
 
     return {
         "total_quantidade_livro": total
+    }
+
+def total_livros_disponiveis():
+    total =db.session.execute(
+        select(func.sum(Livro.quantidade_disponivel))
+    ).scalar()
+
+    return {
+        "total_quantidade_disponivel": total
     }
