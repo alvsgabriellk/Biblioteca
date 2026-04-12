@@ -863,13 +863,35 @@ tr:hover td {
 
       <div id="emprestados" class="card">
         <div class="card-title">Empréstimos em andamento</div>
-        <div class="card-desc">Livros atualmente fora do acervo e seus respectivos prazos.</div>
+        <div class="card-desc">Livros atualmente fora da biblioteca e seus respectivos prazos.</div>
         <div class="table-wrap">
           <table>
-            <tr><th>ID</th><th>Livro</th><th>Usuário</th><th>Empréstimo</th><th>Devolução</th><th>Status</th></tr>
-            <tr><td>#001</td><td>Dom Casmurro</td><td><span class="avatar">JS</span>João</td><td>01/04</td><td>15/04</td><td><span class="status-pill status-active">No prazo</span></td></tr>
-            <tr><td>#002</td><td>1984</td><td><span class="avatar" style="background:#fef3e2;color:#854f0b">MA</span>Maria</td><td>20/03</td><td>03/04</td><td><span class="status-pill status-pending">Atrasado</span></td></tr>
-            <tr><td>#003</td><td>Grande Sertão</td><td><span class="avatar" style="background:#e6f4ea;color:#1a6e35">CR</span>Carlos</td><td>05/04</td><td>19/04</td><td><span class="status-pill status-active">No prazo</span></td></tr>
+            <tr>
+              <th>ID</th>
+              <th>Livro</th>
+              <th>Usuário</th>
+              <th>Empréstimo</th>
+              <th>Devolução</th>
+              <th>Status</th>
+            </tr>
+            {% for e in emprestimos %}
+              {% if e %}
+                <tr>
+                  <td>{{e.id}}</td>
+                  <td>{{e.livro.titulo}}</td>
+                  <td>{{e.usuario.nome}}</td>
+                  <td>{{e.data_emprestimo.strftime("%d/%m")}}</td>
+                  <td>{{e.data_devolucao.strftime("%d/%m")}}</td>
+                  <td>
+                    {% if e.data_devolucao < hoje %}
+                      <span class="status-pill status-pending">Atrasado</span>
+                    {% else %}
+                      <span class="status-pill status-active">No prazo</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
           </table>
         </div>
       </div>
