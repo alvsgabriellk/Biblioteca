@@ -4,3 +4,5 @@ from .dashboard_service import data_primeiro_criado
 from .dashboard_service import totais_livros_quantidade
 from .dashboard_service import dados_livro
 from .dashboard_service import dados_emprestimo
+from .dashboard_service import totais_livros_quantidade
+from .dashboard_service import total_livros_disponiveis
