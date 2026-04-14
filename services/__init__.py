@@ -8,3 +8,4 @@ from .dashboard_service import totais_livros_quantidade
 from .dashboard_service import total_livros_disponiveis
 from .dashboard_service import total_emprestimos_ativos_e_atrasados
 from .dashboard_service import ultimo_emprestimo
+from .dashboard_service import atividades_recentes
