@@ -886,13 +886,7 @@ tr:hover td {
         
       </div>
 
-      <div id="emprestados"
-      {% if open_section == "emprestados" %}
-      style="display:block;"
-      {% else %}
-      style="display: none;"
-      {% endif %}
-      class="card">
+      <div id="emprestados" class="card">
         <div class="card-title">Empréstimos em andamento</div>
         <div class="card-desc">Livros atualmente fora da biblioteca e seus respectivos prazos.</div>
         <div class="table-wrap">
@@ -976,18 +970,6 @@ if (flashDataEl) {
 
   flashMessages.forEach(([category, message]) => {
     showToast(category, message);
-  });
-}
-</script>
-
-<script>
-function irParaEmprestados() {
-  const el = document.getElementById("emprestados");
-
-  el.style.display = "block"; // caso esteja escondido
-
-  el.scrollIntoView({
-    behavior: "smooth"
   });
 }
 </script>
