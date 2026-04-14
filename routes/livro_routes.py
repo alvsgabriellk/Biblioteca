@@ -79,20 +79,3 @@ def deletar_livro():
     flash("Livro deletado com sucesso!", "success")
     return redirect(url_for("index", open="deletarLivro"), code=303)
 
-@livro_bp.route("/listar", methods=["GET"])
-def listar_livros():
-    #antes
-    #livros = Livro.query.all()
-
-    #depois
-    livros = db.session.execute(db.select(Livro)).scalars().all()
-
-    if not livros:
-        flash("Nenhum livro encontrado", "error")
-        return render_template("index.html"), 404
-
-    return render_template("index.html", livros=livros), 200
-
-
-
-
