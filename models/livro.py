@@ -10,3 +10,4 @@ class Livro(db.Model):
     quantidade_total = db.Column(db.Integer, nullable=False)
     quantidade_disponivel = db.Column(db.Integer, nullable=False)
     data_criado = db.Column(db.Date, default=date.today)
+    ativo = db.Column(db.Boolean, default=True)

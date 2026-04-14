@@ -9,3 +9,4 @@ class Usuario(db.Model):
     email = db.Column(db.String(70), unique=True, nullable=False)
     senha = db.Column(db.String(200), nullable=False)
     data_criado = db.Column(db.Date, default=date.today)
+    ativo = db.Column(db.Boolean, default=True)
