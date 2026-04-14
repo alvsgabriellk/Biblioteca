@@ -1,11 +1,12 @@
-from .dashboard_service import get_totais_dashboard
-from .dashboard_service import dados_usuario
-from .dashboard_service import data_primeiro_criado
-from .dashboard_service import totais_livros_quantidade
-from .dashboard_service import dados_livro
-from .dashboard_service import dados_emprestimo
-from .dashboard_service import totais_livros_quantidade
-from .dashboard_service import total_livros_disponiveis
-from .dashboard_service import total_emprestimos_ativos_e_atrasados
-from .dashboard_service import ultimo_emprestimo
-from .dashboard_service import atividades_recentes
+from .dashboard_service import (
+    get_totais_dashboard,
+    total_emprestimos_ativos_e_atrasados,
+    total_livros_disponiveis,
+    totais_livros_quantidade,
+    ultimo_emprestimo,
+    atividades_recentes,
+    dados_usuario,
+    dados_livro,
+    dados_emprestimo,
+    data_primeiro_criado
+)
