@@ -23,8 +23,8 @@ class Emprestimo(db.Model):
         nullable=False
     )
 
-    livro = db.relationship("Livro")
-    usuario = db.relationship("Usuario")
+    livro = db.relationship("Livro", backref="emprestimos")
+    usuario = db.relationship("Usuario", backref="emprestimos")
 
     @property
     def status_real(self):
