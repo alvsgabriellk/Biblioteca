@@ -924,7 +924,7 @@ tr:hover td {
                   <td>{{e.data_devolucao.strftime("%d/%m")}}</td>
                   <td>
                     {% if e.data_devolucao < hoje %}
-                      <span class="status-pill status-pending">Atrasado</span>
+                      <span class="status-pill status-atrased">Atrasado</span>
                     {% else %}
                       <span class="status-pill status-active">No prazo</span>
                     {% endif %}
