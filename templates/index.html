@@ -690,13 +690,15 @@ tr:hover td {
           </div>
         </div>
         <div class="divider"></div>
-        <div style="font-size:12px;color:#6b7280;margin-bottom:10px;font-weight:500">Atividade recente</div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:10px;font-weight:500">Atividade recente
+        </div>
         <table>
           <tr>
             <th>Livro</th>
             <th>Usuário</th>
             <th>Ação</th>
-            <th>Data</th></tr>
+            <th>Data</th>
+          </tr>
             {% for a in atividades %}
               {% if a %}
                 <tr>
@@ -705,23 +707,17 @@ tr:hover td {
                     <span class="avatar"></span>
                     <span class="nome">{{a.usuario.nome}}</span>
                   </td>
-                  {% if a.status_real == "DEVOLVIDO" %}
                     <td>
-                      <span class="status-pill status-active">Devolvido</span>
+                      {% if a.status_real == "DEVOLVIDO" %}
+                        <span class="status-pill status-active">Devolvido</span>
+                      {% elif a.status_real == "EMPRESTADO" %}
+                        <span class="status-pill status-active">Emprestado hoje</span>
+                      {% elif a.status_real == "ATRASADO" %}
+                        <span class="status-pill status-atrased">Atrasado</span>
+                      {% else %}
+                        <span class="status-pill status-pending">Em andamento</span>
                     </td>
-                  {% elif a.status_real == "EMPRESTADO" %}
-                    <td>
-                      <span class="status-pill status-active">Emprestado hoje</span>
-                    </td>
-                  {% elif a.status_real == "ATRASADO" %}
-                    <td>
-                      <span class="status-pill status-atrased">Atrasado</span>
-                    </td>
-                  {% else %}
-                    <td>
-                      <span class="status-pill status-pending">Em andamento</span>
-                    </td>
-                  {% endif %}
+                      {% endif %}
                     <td>{{a.data_emprestimo.strftime("%d/%m")}}</td>
                 </tr>
               {% endif %}
@@ -795,19 +791,13 @@ tr:hover td {
             {% for usuario in usuarios %}
               {% if usuario %}
                 <tr>
-                  <td>
-                    #{{usuario.id}}
-                  </td>
+                  <td>{{usuario.id}}</td>
                   <td>
                     <span class="avatar"></span>
                     <span class="nome">{{usuario.nome}}</span>
                   </td>
-                  <td>
-                    {{usuario.email}}
-                  </td>
-                  <td>
-                    {{usuario.data_criado.strftime("%d/%m/%Y")}}
-                  </td>
+                  <td>{{usuario.email}}</td>
+                  <td>{{usuario.data_criado.strftime("%d/%m/%Y")}}</td>
                 </tr>
               {% endif %}
             {% endfor %}
@@ -832,21 +822,11 @@ tr:hover td {
             {% for livro in livros %}
               {% if livro %}
                 <tr>
-                  <td>
-                    #{{livro.id}}
-                  </td>
-                  <td>
-                    {{livro.titulo}}
-                  </td>
-                  <td>
-                    {{livro.autor}}
-                  </td>
-                  <td>
-                    {{livro.quantidade_total}}
-                  </td>
-                  <td>
-                    {{livro.quantidade_disponivel}}
-                  </td>
+                  <td>{{livro.id}}</td>
+                  <td>{{livro.titulo}}</td>
+                  <td>{{livro.autor}}</td>
+                  <td>{{livro.quantidade_total}}</td>
+                  <td>{{livro.quantidade_disponivel}}</td>
                   <td>
                     {% if livro.quantidade_disponivel > 0 %}
                       <span class="status-pill status-active">Disponível</span>
@@ -867,7 +847,7 @@ tr:hover td {
         <form action="/usuarios/deletar" method="POST">
           <div class="form-group" style="max-width:280px">
             <label>ID do usuário</label>
-            <input type="text" placeholder="#1" name="usuario_id" required>
+            <input type="text" placeholder="1" name="usuario_id" required>
           </div>
         <div class="divider"></div>
         <button type="submit" class="btn-danger">Remover usuário</button>
@@ -880,7 +860,7 @@ tr:hover td {
         <form action="/livros/deletar" method="POST">
           <div class="form-group" style="max-width:280px">
           <label>ID do livro</label>
-          <input type="text" placeholder="#01" name="livro_id" required></div>
+          <input type="text" placeholder="1" name="livro_id" required></div>
         <div class="divider"></div>
         <button type="submit" class="btn-danger">Remover da biblioteca</button>
         </form>
