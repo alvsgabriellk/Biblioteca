@@ -384,6 +384,11 @@ tr:hover td {
   color: #854f0b;
 }
 
+.status-atrased {
+  background-color: #feedd3;
+  color: rgb(252, 69, 69);
+}
+
 .avatar {
   width: 28px;
   height: 28px;
@@ -687,10 +692,40 @@ tr:hover td {
         <div class="divider"></div>
         <div style="font-size:12px;color:#6b7280;margin-bottom:10px;font-weight:500">Atividade recente</div>
         <table>
-          <tr><th>Livro</th><th>Usuário</th><th>Ação</th><th>Data</th></tr>
-          <tr><td>Dom Casmurro</td><td><span class="avatar">JS</span>João Silva</td><td><span class="status-pill status-active">Emprestado</span></td><td>Hoje</td></tr>
-          <tr><td>1984</td><td><span class="avatar" style="background:#e6f4ea;color:#1a6e35">MA</span>Maria A.</td><td><span class="status-pill status-pending">Pendente</span></td><td>Ontem</td></tr>
-          <tr><td>O Alquimista</td><td><span class="avatar" style="background:#fef3e2;color:#854f0b">CR</span>Carlos R.</td><td><span class="status-pill status-active">Devolvido</span></td><td>06/04</td></tr>
+          <tr>
+            <th>Livro</th>
+            <th>Usuário</th>
+            <th>Ação</th>
+            <th>Data</th></tr>
+            {% for a in atividades %}
+              {% if a %}
+                <tr>
+                  <td>{{a.livro.titulo}}</td>
+                  <td>
+                    <span class="avatar"></span>
+                    <span class="nome">{{a.usuario.nome}}</span>
+                  </td>
+                  {% if a.status_real == "DEVOLVIDO" %}
+                    <td>
+                      <span class="status-pill status-active">Devolvido</span>
+                    </td>
+                  {% elif a.status_real == "EMPRESTADO" %}
+                    <td>
+                      <span class="status-pill status-active">Emprestado hoje</span>
+                    </td>
+                  {% elif a.status_real == "ATRASADO" %}
+                    <td>
+                      <span class="status-pill status-atrased">Atrasado</span>
+                    </td>
+                  {% else %}
+                    <td>
+                      <span class="status-pill status-pending">Em andamento</span>
+                    </td>
+                  {% endif %}
+                    <td>{{a.data_emprestimo.strftime("%d/%m")}}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
         </table>
       </div>
 
