@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from flask_migrate import Migrate
 from database.databanco import db
 import os
 from dotenv import load_dotenv
@@ -24,7 +25,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
 
 db.init_app(app)
-
+migrate = Migrate(app, db)
 
 @app.route("/")
 def index():
@@ -57,8 +58,9 @@ app.register_blueprint(usuario_bp, url_prefix="/usuarios")
 app.register_blueprint(livro_bp, url_prefix="/livros")
 app.register_blueprint(emprestimo_bp, url_prefix="/emprestimos")
 
-with app.app_context():
-    db.create_all()
+# removido pra nao dar conflito com migrations
+"""with app.app_context():
+    db.create_all()"""
 
 if __name__ == "__main__":
     app.run(debug=True)
