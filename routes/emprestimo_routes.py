@@ -18,27 +18,30 @@ def realizar_emprestimo():
         livro_id = int(livro_id)
     except (TypeError, ValueError):
         flash("ID tem que ser um número!", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="emprestimo"), code=303)
     
     if usuario_id <= 0 or livro_id <= 0:
         flash("ID inválido", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="emprestimo"), code=303)
     
-    usuario = db.session.get(Usuario, usuario_id)
+    usuario = db.session.get(Usuario, usuario_id)    
+    livro = db.session.get(Livro, livro_id)
+
+    if not usuario and not livro:
+        flash("Livro e Usuário não encontrados no sistema", "error")
+        return redirect(url_for("index", open="emprestimo"), code=303)
 
     if not usuario:
         flash("Usuário não encontrado no sistema", "error")
-        return redirect(url_for("index"), code=303)
-    
-    livro = db.session.get(Livro, livro_id)
+        return redirect(url_for("index", open="emprestimo"), code=303)
 
     if not livro:
         flash("Livro não encontrado no sistema", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="emprestimo"), code=303)
     
     if livro.quantidade_disponivel <= 0:
         flash("Livro indisponível", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="emprestimo"), code=303)
     
     emprestimo = Emprestimo(
         usuario_id=usuario_id,
@@ -51,7 +54,7 @@ def realizar_emprestimo():
     db.session.commit()
 
     flash("Empréstimo realizado com sucesso!", "success")
-    return redirect(url_for("index"), code=303)
+    return redirect(url_for("index", open="emprestimo"), code=303)
 
 @emprestimo_bp.route("/devolver", methods=["POST"])
 def devolver_livro():
@@ -59,27 +62,27 @@ def devolver_livro():
 
     if not emprestimo_id:
         flash("Todos os dados são obrigatórios", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="devolver"), code=303)
     
     try:
         emprestimo_id = int(emprestimo_id)
     except (TypeError, ValueError):
         flash("ID inválido", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="devolver"), code=303)
     
     if emprestimo_id <= 0:
         flash("ID inválido", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="devolver"), code=303)
     
     emprestimo = db.session.get(Emprestimo, emprestimo_id)
 
     if not emprestimo:
         flash("Empréstimo não encontrado no sistema", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="devolver"), code=303)
     
     if emprestimo.status == StatusEmprestimo.DEVOLVIDO:
         flash("Livro já foi devolvido", "error")
-        return redirect(url_for("index"), code=303)
+        return redirect(url_for("index", open="devolver"), code=303)
     
     emprestimo.status = StatusEmprestimo.DEVOLVIDO
     
@@ -88,4 +91,4 @@ def devolver_livro():
     db.session.commit()
 
     flash("Livro devolvido com sucesso!", "success")
-    return redirect(url_for("index"), code=303)
+    return redirect(url_for("index", open="devolver"), code=303)
