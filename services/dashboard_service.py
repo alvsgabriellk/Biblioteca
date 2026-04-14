@@ -121,3 +121,17 @@ def ultimo_emprestimo():
     return {
         "ultimo_emprestimo": emprestimo
     }
+
+def atividades_recentes():
+    emprestimos = db.session.execute(
+        select(Emprestimo)
+        .order_by(
+            Emprestimo.data_emprestimo.desc(),
+            Emprestimo.id.desc()
+        )
+        .limit(3)
+    ).scalars().all()
+
+    return {
+        "atividades": emprestimos
+    }
