@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro - Sistema de Biblioteca</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #f0ece4;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .auth-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 550px;
+    border-radius: 12px;
+    border: 0.5px solid #d6d0c8;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    animation: fadeIn 0.4s ease;
+  }
+
+  .auth-header {
+    background: #1a1a2e;
+    padding: 24px;
+    text-align: center;
+    color: #e2d9c8;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .auth-body {
+    padding: 30px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b7280;
+  }
+
+  .form-group input {
+    padding: 11px;
+    border: 0.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 13px;
+    background: #f9fafb;
+    outline: none;
+  }
+
+  .form-group input:focus {
+    border-color: #c9a96e;
+    box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #1a1a2e;
+    color: #c9a96e;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+
+  .auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .auth-footer a {
+    color: #1a1a2e;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="auth-card">
+    <div class="auth-header">
+      <h3>Criar Nova Conta</h3>
+      <p style="font-size: 12px; opacity: 0.8; margin-top: 5px;">Junte-se ao nosso sistema de gerenciamento</p>
+    </div>
+    <div class="auth-body">
+      <form action="/cliente/cadastro" method="POST">
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" name="nome" placeholder="Ex: Maria Souza" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" name="email" placeholder="maria@email.com" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" name="senha" placeholder="••••••••" required>
+          </div>
+          <div class="form-group">
+            <label>Confirmar Senha</label>
+            <input type="password" name="confirma_senha" placeholder="••••••••" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Finalizar Cadastro</button>
+      </form>
+      <div class="auth-footer">
+        Já possui conta? <a href="/login">Fazer Login</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
