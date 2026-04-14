@@ -25,4 +25,18 @@ class Emprestimo(db.Model):
 
     livro = db.relationship("Livro")
     usuario = db.relationship("Usuario")
-    
+
+    @property
+    def status_real(self):
+        hoje = date.today()
+
+        if self.status == StatusEmprestimo.DEVOLVIDO:
+            return "DEVOLVIDO"
+
+        if self.data_emprestimo == hoje:
+            return "EMPRESTADO"
+
+        if self.data_devolucao < hoje:
+            return "ATRASADO"
+
+        return "EM_ANDAMENTO"    
