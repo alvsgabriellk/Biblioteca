@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 from models import Usuario, Livro, Emprestimo, StatusEmprestimo
 from routes import usuario_bp, livro_bp, emprestimo_bp
-from services import get_totais_dashboard, dados_usuario, data_primeiro_criado, totais_livros_quantidade, dados_livro, dados_emprestimo, total_livros_disponiveis, total_emprestimos_ativos_e_atrasados, ultimo_emprestimo
+from services import get_totais_dashboard, dados_usuario, data_primeiro_criado, totais_livros_quantidade, dados_livro, dados_emprestimo, total_livros_disponiveis, total_emprestimos_ativos_e_atrasados, ultimo_emprestimo, atividades_recentes
 
 load_dotenv()
 
@@ -28,7 +28,8 @@ def index():
     dados_total_disponivel = total_livros_disponiveis()
     dados_total_ativo_atrasado = total_emprestimos_ativos_e_atrasados()
     dados_ultimo_emprestimo = ultimo_emprestimo()
-    return render_template("index.html", **dados_totais, **dados_usuarios, **dados_primeiro_usuario, **dados_totais_livros, **dados_livros, **dados_emprestimos, **dados_total_disponivel, **dados_total_ativo_atrasado,**dados_ultimo_emprestimo, open_section=open_section)
+    dados_atividades = atividades_recentes()
+    return render_template("index.html", **dados_totais, **dados_usuarios, **dados_primeiro_usuario, **dados_totais_livros, **dados_livros, **dados_emprestimos, **dados_total_disponivel, **dados_total_ativo_atrasado,**dados_ultimo_emprestimo,**dados_atividades ,open_section=open_section)
 
 
 app.register_blueprint(usuario_bp, url_prefix="/usuarios")
