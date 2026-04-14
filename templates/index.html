@@ -561,12 +561,184 @@ tr:hover td {
   to   { width: 0%; }
 }
 
+/* =============================================
+   RESPONSIVIDADE — ADICIONADO
+   ============================================= */
+
+/* Botão hamburguer (só aparece no mobile) */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #374151;
+  flex-shrink: 0;
+}
+
+.menu-toggle svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+/* Overlay escuro atrás da sidebar no mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 99;
+}
+
+.sidebar-overlay.open {
+  display: block;
+}
+
+/* ---- Tablet (até 900px) ---- */
+@media (max-width: 900px) {
+  body {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .wrap {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .sidebar {
+    width: 240px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---- Mobile (até 640px) ---- */
+@media (max-width: 640px) {
+  body {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .wrap {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    flex-direction: column;
+  }
+
+  /* Sidebar vira gaveta deslizante */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 270px;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    overflow-y: auto;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Topbar: mostra o botão hamburguer */
+  .topbar {
+    padding: 0 16px;
+    gap: 10px;
+  }
+
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Esconde o breadcrumb no mobile pra não poluir */
+  .page-breadcrumb {
+    display: none;
+  }
+
+  /* Esconde os badges no mobile */
+  .badges {
+    display: none;
+  }
+
+  /* Área de conteúdo ocupa tudo */
+  .main {
+    width: 100%;
+    height: 100dvh;
+  }
+
+  .content-area {
+    padding: 16px;
+  }
+
+  /* Cards com padding menor */
+  .card {
+    padding: 16px;
+  }
+
+  /* Stats em coluna única */
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  /* Home cards em coluna única */
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Formulários em coluna única */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Botões full width */
+  .btn-primary,
+  .btn-danger {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Tabelas: scroll horizontal já existia, ajustando padding das células */
+  th, td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  /* Toast menor no mobile */
+  .toast {
+    min-width: unset;
+    max-width: calc(100vw - 2rem);
+  }
+
+  .toast-container {
+    left: 1rem;
+    right: 1rem;
+    top: 1rem;
+  }
+}
 </style>
 </head>
 <body>
 
+<!-- Overlay para fechar sidebar ao clicar fora (mobile) -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
 <div class="wrap">
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="lib-logo">
         <div class="lib-icon">
@@ -632,6 +804,14 @@ tr:hover td {
 
   <div class="main">
     <div class="topbar">
+      <!-- Botão hamburguer (só visível no mobile) -->
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleSidebar()" aria-label="Abrir menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
       <div>
         <div class="page-title" id="page-title">Visão geral</div>
         <div class="page-breadcrumb">Sistema de Gerenciamento de Biblioteca</div>
@@ -977,12 +1157,10 @@ function closeToast(toast) {
   toast.addEventListener('animationend', () => toast.remove());
 }
 
-// ✅ ÚNICA fonte de dados
 const flashDataEl = document.getElementById('flash-data');
 
 if (flashDataEl) {
   const flashMessages = JSON.parse(flashDataEl.textContent);
-
   flashMessages.forEach(([category, message]) => {
     showToast(category, message);
   });
@@ -990,42 +1168,32 @@ if (flashDataEl) {
 </script>
 
 <script>
-        function gerarIniciais(nome) {
-            if (!nome) return "";
+  function gerarIniciais(nome) {
+    if (!nome) return "";
+    const partes = nome.trim().split(" ").filter(p => p);
+    if (partes.length === 1) return partes[0][0].toUpperCase();
+    return (partes[0][0] + partes[1][0]).toUpperCase();
+  }
 
-            const partes = nome.trim().split(" ").filter(p => p);
+  function corPorNome(nome) {
+    let hash = 0;
+    for (let i = 0; i < nome.length; i++) {
+      hash = nome.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue = hash % 560;
+    return `hsl(${hue}, 35%, 70% `;
+  }
 
-            if (partes.length === 1) {
-                return partes[0][0].toUpperCase();
-            }
-
-            return (partes[0][0] + partes[1][0]).toUpperCase();
-        }
-
-        function corPorNome(nome) {
-            let hash = 0;
-            for (let i = 0; i < nome.length; i++) {
-                hash = nome.charCodeAt(i) + ((hash << 5) - hash);
-            }
-
-            const hue = hash % 560;
-
-            return `hsl(${hue}, 35%, 70% `
-        }
-
-        document.querySelectorAll("td").forEach(td => {
-            const nomeSpan = td.querySelector(".nome");
-            const avatar = td.querySelector(".avatar");
-
-            if (nomeSpan && avatar) {
-                const nome = nomeSpan.textContent.trim();
-
-                avatar.textContent = gerarIniciais(nome);
-                avatar.style.background = corPorNome(nome);
-            }
-        });
-    </script>
-
+  document.querySelectorAll("td").forEach(td => {
+    const nomeSpan = td.querySelector(".nome");
+    const avatar = td.querySelector(".avatar");
+    if (nomeSpan && avatar) {
+      const nome = nomeSpan.textContent.trim();
+      avatar.textContent = gerarIniciais(nome);
+      avatar.style.background = corPorNome(nome);
+    }
+  });
+</script>
 
 <script>
 const titles = {
@@ -1034,28 +1202,41 @@ const titles = {
   deletarLivro:'Remover livro',emprestimo:'Empréstimo',devolver:'Devolução',
   emprestados:'Em andamento'
 };
+
 function show(id, el) {
   document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if(el) el.classList.add('active');
   document.getElementById('page-title').textContent = titles[id]||id;
+  // Fecha a sidebar ao navegar no mobile
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.remove('open');
+  overlay.classList.remove('open');
 }
 </script>
-
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const openSection = params.get("open");
-
   if (openSection) {
     show(openSection);
   }
 });
-
 </script>
-
 
 </body>
 </html>
