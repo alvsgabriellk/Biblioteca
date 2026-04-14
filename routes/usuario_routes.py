@@ -1,6 +1,7 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash
-from models import Usuario
+from models import Usuario, Emprestimo, StatusEmprestimo
 from database.databanco import db
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
@@ -74,6 +75,17 @@ def deletar_usuario():
 
     if not usuario:
         flash("Usuário não encontrado no sistema", "error")
+        return redirect(url_for("index", open="deletarUsuario"), code=303)
+    
+    tem_emprestimo = db.session.execute(
+        select(Emprestimo).where(
+            Emprestimo.usuario_id == usuario.id,
+            Emprestimo.status != StatusEmprestimo.DEVOLVIDO
+        )
+    ).scalars().all()
+
+    if tem_emprestimo:
+        flash("Não é possível deletar, Usúario possui um empréstimo ativo.", "error")
         return redirect(url_for("index", open="deletarUsuario"), code=303)
 
     db.session.delete(usuario)

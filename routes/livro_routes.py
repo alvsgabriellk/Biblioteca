@@ -1,6 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
-from models import Livro
+from models import Livro, Emprestimo, StatusEmprestimo
 from database.databanco import db
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 livro_bp = Blueprint("livros", __name__)
@@ -71,6 +72,17 @@ def deletar_livro():
 
     if not livro or livro is None:
         flash("Livro não encontrado no sistema", "error")
+        return redirect(url_for("index", open="deletarLivro"), code=303)
+    
+    tem_emprestimo = db.session.execute(
+        select(Emprestimo).where(
+            Emprestimo.livro_id == livro.id,
+            Emprestimo.status != StatusEmprestimo.DEVOLVIDO
+        )
+    ).scalars().all()
+
+    if tem_emprestimo:
+        flash("Não é possível deletar, Livro está emprestado.", "error")
         return redirect(url_for("index", open="deletarLivro"), code=303)
     
     db.session.delete(livro)
