@@ -909,6 +909,7 @@ tr:hover td {
         <div class="card-title">Cadastrar novo usuário</div>
         <div class="card-desc">Preencha os dados do usuário para liberar acesso ao sistema.</div>
         <form action="/usuarios/novo" method="POST">
+          <input type="hidden" name="open" value="novoUsuario">
           <div class="form-row">
           <div class="form-group">
             <label>Nome completo</label>
@@ -935,6 +936,7 @@ tr:hover td {
         <div class="card-title">Adicionar livro a biblioteca</div>
         <div class="card-desc">Registre um novo título na coleção da biblioteca.</div>
         <form action="/livros/novo" method="POST">
+          <input type="hidden" name="open" value="novoLivro">
         <div class="form-row">
           <div class="form-group">
             <label>Título</label>
@@ -1025,6 +1027,7 @@ tr:hover td {
         <div class="card-title">Remover usuário</div>
         <div class="card-desc">Informe o ID do usuário que deseja remover do sistema. Esta ação não pode ser desfeita.</div>
         <form action="/usuarios/deletar" method="POST">
+          <input type="hidden" name="open" value="deletarUsuario">
           <div class="form-group" style="max-width:280px">
             <label>ID do usuário</label>
             <input type="text" placeholder="1" name="usuario_id" required>
@@ -1038,6 +1041,7 @@ tr:hover td {
         <div class="card-title">Remover livro</div>
         <div class="card-desc">Informe o ID do livro que deseja retirar da biblioteca. Certifique-se de que não há livros emprestados.</div>
         <form action="/livros/deletar" method="POST">
+          <input type="hidden" name="open" value="deletarLivro">
           <div class="form-group" style="max-width:280px">
           <label>ID do livro</label>
           <input type="text" placeholder="1" name="livro_id" required></div>
@@ -1050,6 +1054,7 @@ tr:hover td {
         <div class="card-title">Registrar empréstimo</div>
         <div class="card-desc">Associe um livro a um usuário para registrar o empréstimo.</div>
         <form action="/emprestimos/novo" method="POST">
+          <input type="hidden" name="open" value="emprestimo">
         <div class="form-row">
             <div class="form-group">
               <label>ID do usuário</label>
@@ -1069,6 +1074,7 @@ tr:hover td {
         <div class="card-title">Registrar devolução</div>
         <div class="card-desc">Informe o ID do empréstimo para devolver o livro para a biblioteca.</div>
         <form action="/emprestimos/devolver" method="POST">
+          <input type="hidden" name="open" value="devolver">
           <div class="form-row">
           <div class="form-group">
             <label>ID do empréstimo</label>
