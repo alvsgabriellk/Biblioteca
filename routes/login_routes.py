@@ -6,8 +6,8 @@ from werkzeug.security import check_password_hash
 
 login_bp = Blueprint("login", __name__)
 
-@login_bp.route("/acesso", methods=["POST"])
-def login_acesso():
+@login_bp.route("/entrar", methods=["POST"])
+def entrar():
     email = request.form.get("email", "").strip()
     senha = request.form.get("senha", "").strip()
 
@@ -28,7 +28,7 @@ def login_acesso():
         flash("Email ou senha inválidos", "error")
         return redirect(url_for("login"), code=303)
     
-    session["user_id"] = espectador.id
+    session["espectador_id"] = espectador.id
     session["is_admin"] = espectador.is_admin
     
     return redirect(url_for("index"), code=303)
