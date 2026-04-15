@@ -1,7 +1,8 @@
+from flask import session
 from datetime import date
 from sqlalchemy import select, func
 from database.databanco import db
-from models import Livro, Usuario, Emprestimo, StatusEmprestimo
+from models import Livro, Usuario, Emprestimo, StatusEmprestimo, Espectador
 
 def get_totais_dashboard():
     total_livros = db.session.execute(
@@ -134,4 +135,36 @@ def atividades_recentes():
 
     return {
         "atividades": emprestimos
+    }
+
+def verificar_session():
+    espectador_id = session.get("espectador_id")
+
+    if not espectador_id:
+        return {"tipo_usuario": None}
+    
+    espectador = db.session.get(Espectador, espectador_id)
+
+    if not espectador:
+        return {"tipo_usuario": None}
+    
+    tipo = "Admin" if espectador.is_admin else "Espectador"
+
+
+        # nao funcional
+    """espectador_admin = db.session.execute(
+        select(Espectador).where(
+            espectador.is_admin == True
+        )
+    ).scalar()
+
+    espectador = db.session.execute(
+        select(Espectador).where(
+            Espectador.is_admin == False
+        )
+    ).scalar()"""
+
+    return {
+        "tipo_usuario": tipo,
+        "usuario_nome": espectador.nome
     }
