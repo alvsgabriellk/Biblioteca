@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_migrate import Migrate
 from database.databanco import db
 import os
 from dotenv import load_dotenv
 from models import Usuario, Livro, Emprestimo, StatusEmprestimo
-from routes import usuario_bp, livro_bp, emprestimo_bp, cadastro_bp, login_bp
+from routes import usuario_bp, livro_bp, emprestimo_bp, cadastro_bp, login_bp, existe_usuario
 from services import (
     get_totais_dashboard, 
     dados_usuario, 
@@ -60,6 +60,17 @@ def cadastro():
 @app.route("/login")
 def login():
     return render_template("login.html")
+
+@app.before_request
+def controle_acesso():
+    rota_livre = ["login", "cadastro", "cadastros.novo_cadastro", "login.entrar"]
+
+    if request.endpoint in rota_livre:
+        return
+    if not existe_usuario():
+        return redirect(url_for("cadastro"))
+    if not session.get("espectador_id"):
+        return redirect(url_for("login"))
 
 
 app.register_blueprint(usuario_bp, url_prefix="/usuarios")
