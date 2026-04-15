@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, url_for, flash
+from flask import Blueprint, request, redirect, url_for, flash
 from models import Livro, Emprestimo, StatusEmprestimo
 from database.databanco import db
 from secret import admin_required
