@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for, render_template, flash
+from flask import Blueprint, request, redirect, url_for, flash
 from models import Usuario, Emprestimo, StatusEmprestimo
 from database.databanco import db
 from sqlalchemy import select
@@ -18,6 +18,10 @@ def novo_usuario():
 
     if not nome or not email or not senha:
         flash("Todos os dados são obrigatórios", "error")
+        return redirect(url_for("index", open="novoUsuario"), code=303)
+    
+    if "@" not in email:
+        flash("Email inválido", "error")
         return redirect(url_for("index", open="novoUsuario"), code=303)
     
     if len(senha) < 8:
