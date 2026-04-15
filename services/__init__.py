@@ -8,5 +8,6 @@ from .dashboard_service import (
     dados_usuario,
     dados_livro,
     dados_emprestimo,
-    data_primeiro_criado
+    data_primeiro_criado,
+    verificar_session
 )
