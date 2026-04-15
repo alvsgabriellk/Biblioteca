@@ -10,7 +10,7 @@ load_dotenv()
 
 cadastro_bp = Blueprint("cadastros", __name__)
 
-cadastro_bp.route("/cadastros/novo", methods=["POST"])
+@cadastro_bp.route("/novo", methods=["POST"])
 def novo_cadastro():
     nome = request.form.get("nome", "").strip()
     email = request.form.get("email", "").strip()
