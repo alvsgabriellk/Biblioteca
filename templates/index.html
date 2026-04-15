@@ -812,14 +812,24 @@ tr:hover td {
           <line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </button>
-      <div>
+
+      <div class="topbar-left">
         <div class="page-title" id="page-title">Visão geral</div>
         <div class="page-breadcrumb">Sistema de Gerenciamento de Biblioteca</div>
       </div>
-      <div class="badges">
-        <span class="badge badge-books">{{total_livros}} livros</span>
-        <span class="badge badge-users">{{total_usuarios}} usuários</span>
-      </div>
+
+      <div class="topbar-right">
+    <div class="user-type-badge">
+       <span>({{ tipo_usuario }})</span>
+    </div>
+
+    <div class="badges">
+      <span class="badge badge-books">{{total_livros}} livros</span>
+      <span class="badge badge-users">{{total_usuarios}} usuários</span>
+    </div>
+  </div>
+
+      
     </div>
 
     <div class="content-area">
