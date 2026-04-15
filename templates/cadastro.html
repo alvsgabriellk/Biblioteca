@@ -116,7 +116,7 @@
       <p style="font-size: 12px; opacity: 0.8; margin-top: 5px;">Junte-se ao nosso sistema de gerenciamento</p>
     </div>
     <div class="auth-body">
-      <form action="/cliente/cadastro" method="POST">
+      <form action="/cadastros/novo" method="POST">
         <div class="form-group">
           <label>Nome Completo</label>
           <input type="text" name="nome" placeholder="Ex: Maria Souza" required>
@@ -130,7 +130,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>••••••••</label>
-            <input type="text" name="admin_code" placeholder="opcional" required>
+            <input type="password" name="admin_code" placeholder="opcional" required>
           </div>
         </div>
         <div class="form-row">
@@ -140,7 +140,7 @@
           </div>
           <div class="form-group">
             <label>Confirmar Senha</label>
-            <input type="password" name="confirma_senha" placeholder="••••••••" required>
+            <input type="password" name="confirmar_senha" placeholder="••••••••" required>
           </div>
         </div>
         <button type="submit" class="btn-primary">Finalizar Cadastro</button>
