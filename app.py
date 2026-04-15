@@ -4,7 +4,7 @@ from database.databanco import db
 import os
 from dotenv import load_dotenv
 from models import Usuario, Livro, Emprestimo, StatusEmprestimo
-from routes import usuario_bp, livro_bp, emprestimo_bp
+from routes import usuario_bp, livro_bp, emprestimo_bp, cadastro_bp
 from services import (
     get_totais_dashboard, 
     dados_usuario, 
@@ -57,6 +57,7 @@ def index():
 app.register_blueprint(usuario_bp, url_prefix="/usuarios")
 app.register_blueprint(livro_bp, url_prefix="/livros")
 app.register_blueprint(emprestimo_bp, url_prefix="/emprestimos")
+app.register_blueprint(cadastro_bp, url_prefix="/cadastros")
 
 # removido pra nao dar conflito com migrations
 """with app.app_context():
