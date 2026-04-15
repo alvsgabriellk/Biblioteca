@@ -1,12 +1,14 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from models import Livro, Emprestimo, StatusEmprestimo
 from database.databanco import db
+from secret import admin_required
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 livro_bp = Blueprint("livros", __name__)
 
 @livro_bp.route("/novo", methods=["POST"])
+@admin_required
 def novo_livro():
 
     titulo = request.form.get("titulo", "").strip()
@@ -47,6 +49,7 @@ def novo_livro():
     return redirect(url_for("index", open="novoLivro"), code=303)
 
 @livro_bp.route("/deletar", methods=["POST"])
+@admin_required
 def deletar_livro():
     id = request.form.get("livro_id")
 

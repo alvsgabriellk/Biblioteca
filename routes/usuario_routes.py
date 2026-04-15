@@ -4,10 +4,12 @@ from database.databanco import db
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
+from secret import admin_required
 
 usuario_bp = Blueprint("usuarios", __name__)
 
 @usuario_bp.route("/novo", methods=["POST"])
+@admin_required
 def novo_usuario():
 
     nome = request.form.get("nome", "").strip()
@@ -50,6 +52,7 @@ def novo_usuario():
     return redirect(url_for("index", open="novoUsuario"), code=303)
 
 @usuario_bp.route("/deletar", methods=["POST"])
+@admin_required
 def deletar_usuario():
     id = request.form.get("usuario_id")
 

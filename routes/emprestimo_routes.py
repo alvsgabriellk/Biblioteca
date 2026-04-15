@@ -1,10 +1,12 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from models import Emprestimo, Livro, Usuario, StatusEmprestimo
+from secret import admin_required
 from database.databanco import db
 
 emprestimo_bp = Blueprint("emprestimos", __name__)
 
 @emprestimo_bp.route("/novo", methods=["POST"])
+@admin_required
 def realizar_emprestimo():
     usuario_id = request.form.get("usuario_id", "").strip()
     livro_id = request.form.get("livro_id", "").strip()
@@ -57,6 +59,7 @@ def realizar_emprestimo():
     return redirect(url_for("index", open="emprestimo"), code=303)
 
 @emprestimo_bp.route("/devolver", methods=["POST"])
+@admin_required
 def devolver_livro():
     emprestimo_id = request.form.get("emprestimo_id", "").strip()
 
