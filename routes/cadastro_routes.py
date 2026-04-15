@@ -15,7 +15,7 @@ def novo_cadastro():
     nome = request.form.get("nome", "").strip()
     email = request.form.get("email", "").strip()
     senha = request.form.get("senha", "").strip()
-    confirmar_senha = request.form.get("confirmar-senha", "").strip()
+    confirmar_senha = request.form.get("confirmar_senha", "").strip()
     admin_code = request.form.get("admin_code", "").strip()
 
     if not nome or not email or not senha or not confirmar_senha:
