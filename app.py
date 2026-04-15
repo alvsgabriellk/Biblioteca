@@ -15,7 +15,8 @@ from services import (
     total_livros_disponiveis, 
     total_emprestimos_ativos_e_atrasados, 
     ultimo_emprestimo, 
-    atividades_recentes
+    atividades_recentes,
+    verificar_session
 )
 
 load_dotenv()
@@ -42,6 +43,7 @@ def index():
     dados_total_ativo_atrasado = total_emprestimos_ativos_e_atrasados()
     dados_ultimo_emprestimo = ultimo_emprestimo()
     dados_atividades = atividades_recentes()
+    dados_session = verificar_session()
 
     return render_template(
         "index.html", 
@@ -50,7 +52,7 @@ def index():
         **dados_livros, **dados_emprestimos, 
         **dados_total_disponivel, **dados_total_ativo_atrasado,
         **dados_ultimo_emprestimo,**dados_atividades,
-        open_section=open_section
+        **dados_session, open_section=open_section
     )
 
 @app.route("/cadastro")
