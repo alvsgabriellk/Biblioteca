@@ -20,7 +20,9 @@ from services import (
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev-key")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+
+uri = os.getenv("DATABASE_URI") or os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
 db.init_app(app)
 
