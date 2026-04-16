@@ -20,8 +20,18 @@ from services import (
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev-key")
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 
+import os
+
+ENV = os.getenv("ENV", "local")
+
+if ENV == "production":
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "connect_args": {"sslmode": "require"}
+    }
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 db.init_app(app)
 
 @app.route("/")
