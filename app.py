@@ -1,9 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask_migrate import Migrate
 from database.databanco import db
 import os
-from dotenv import load_dotenv
-from models import Usuario, Livro, Emprestimo, StatusEmprestimo
+from models import Usuario, Livro, Emprestimo, StatusEmprestimo, Espectador
 from routes import usuario_bp, livro_bp, emprestimo_bp, cadastro_bp, login_bp, existe_usuario
 from secret import admin_required
 from services import (
@@ -20,14 +18,11 @@ from services import (
     verificar_session
 )
 
-load_dotenv()
-
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev-key")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 
 db.init_app(app)
-migrate = Migrate(app, db)
 
 @app.route("/")
 def index():
