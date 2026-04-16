@@ -148,7 +148,7 @@ def verificar_session():
     if not espectador:
         return {"tipo_usuario": None}
     
-    tipo = "Admin" if espectador.is_admin else "Espectador"
+    tipo = "Admin" if espectador.is_admin else "Usuário"
 
 
         # nao funcional
