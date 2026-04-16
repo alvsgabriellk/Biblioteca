@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 from models import Usuario, Livro, Emprestimo, StatusEmprestimo
 from routes import usuario_bp, livro_bp, emprestimo_bp, cadastro_bp, login_bp, existe_usuario
+from secret import admin_required
 from services import (
     get_totais_dashboard, 
     dados_usuario, 
@@ -23,7 +24,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 
 db.init_app(app)
 migrate = Migrate(app, db)
