@@ -20,13 +20,7 @@ from services import (
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev-key")
-
-uri = os.getenv("DATABASE_URL")
-
-if not uri:
-    uri = "sqlite:///banco.db"
-
-app.config["SQLALCHEMY_DATABASE_URI"] = uri
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 
 db.init_app(app)
 
