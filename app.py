@@ -23,7 +23,7 @@ from services import (
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY")
+app.secret_key = os.getenv("SECRET_KEY", "dev-key")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
 
 db.init_app(app)
@@ -82,9 +82,9 @@ app.register_blueprint(emprestimo_bp, url_prefix="/emprestimos")
 app.register_blueprint(cadastro_bp, url_prefix="/cadastros")
 app.register_blueprint(login_bp, url_prefix="/login")
 
-# removido pra nao dar conflito com migrations
-"""with app.app_context():
-    db.create_all()"""
+
+with app.app_context():
+    db.create_all()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
