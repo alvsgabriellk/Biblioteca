@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from database.databanco import db
 import os
+from dotenv import load_dotenv
+import psycopg2
 from models import Usuario, Livro, Emprestimo, StatusEmprestimo, Espectador
 from routes import usuario_bp, livro_bp, emprestimo_bp, cadastro_bp, login_bp, existe_usuario
 from secret import admin_required
@@ -21,17 +23,17 @@ from services import (
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev-key")
 
-import os
-
 ENV = os.getenv("ENV", "local")
 
 if ENV == "production":
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
         "connect_args": {"sslmode": "require"}
     }
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
+    
 db.init_app(app)
 
 @app.route("/")
