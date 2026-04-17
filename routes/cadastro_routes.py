@@ -30,10 +30,6 @@ def novo_cadastro():
         flash("A senha precisa ter no mínimo 8 caracteres", "error")
         return redirect(url_for("cadastro"), code=303)
     
-    if len(senha) > 20 or len(confirmar_senha) > 20:
-        flash("A senha pode ter no máximo 20 caracteres", "error")
-        return redirect(url_for("cadastro"), code=303)
-    
     if confirmar_senha != senha:
         flash("Senhas não se combinam", "error")
         return redirect(url_for("cadastro"), code=303)

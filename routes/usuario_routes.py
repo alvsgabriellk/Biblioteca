@@ -27,9 +27,6 @@ def novo_usuario():
     if len(senha) < 8:
         flash("A senha precisa ter no mínimo 8 caracteres", "error")
         return redirect(url_for("index"), open="novoUsuario", code=303)
-    if len(senha) > 20:
-        flash("A senha pode ter no máximo 20 caracteres", "error")
-        return redirect(url_for("index"), open="novoUsuario", code=303)
     
     if senha.isdigit():
         flash("A senha não pode conter apenas números", "error")
