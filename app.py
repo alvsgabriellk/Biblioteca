@@ -33,7 +33,7 @@ if ENV == "production":
     }
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
-    
+
 db.init_app(app)
 
 @app.route("/")
@@ -91,6 +91,7 @@ app.register_blueprint(login_bp, url_prefix="/login")
 
 
 with app.app_context():
+    db.drop_all()
     db.create_all()
 
 if __name__ == "__main__":
