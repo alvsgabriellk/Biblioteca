@@ -36,6 +36,8 @@ else:
 
 db.init_app(app)
 
+
+
 @app.route("/")
 def index():
     open_section = request.args.get("open")
