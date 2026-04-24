@@ -19,6 +19,7 @@ from services import (
     atividades_recentes,
     verificar_session
 )
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev-key")
@@ -35,6 +36,8 @@ else:
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 
 db.init_app(app)
+
+migrate = Migrate(app, db)
 
 @app.route("/")
 def index():
