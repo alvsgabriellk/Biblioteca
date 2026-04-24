@@ -1,5 +1,6 @@
 from flask import Blueprint, request, flash, redirect, url_for
 from models import Emprestimo, Livro, Usuario, StatusEmprestimo
+from datetime import date
 from secret import admin_required
 from database.databanco import db
 
@@ -88,6 +89,7 @@ def devolver_livro():
         return redirect(url_for("index", open="devolver"), code=303)
     
     emprestimo.status = StatusEmprestimo.DEVOLVIDO
+    emprestimo.data_ultima_acao = date.today()
     
     emprestimo.livro.quantidade_disponivel += 1
 
