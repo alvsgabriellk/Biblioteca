@@ -3,6 +3,9 @@ from datetime import date, timedelta
 import enum
 from sqlalchemy import Enum
 
+def data_devolucao_padrao():
+    return date.today() + timedelta(days=7)
+
 class StatusEmprestimo(enum.Enum):
     NAO_DEVOLVIDO = "NAO_DEVOLVIDO"
     EM_ANDAMENTO = "EM_ANDAMENTO"
@@ -16,7 +19,10 @@ class Emprestimo(db.Model):
     usuario_id = db.Column(db.Integer, db.ForeignKey("usuarios.id"))
     livro_id = db.Column(db.Integer, db.ForeignKey("livros.id"))
     data_emprestimo = db.Column(db.Date, default=date.today)
-    data_devolucao = db.Column(db.Date, default=lambda: date.today() + timedelta(days=7))
+    data_devolucao = db.Column(
+        db.Date,
+        default=data_devolucao_padrao
+    )
     data_ultima_acao = db.Column(db.Date, default=date.today)
     status = db.Column(
         Enum(StatusEmprestimo),
