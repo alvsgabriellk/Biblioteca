@@ -17,6 +17,7 @@ class Emprestimo(db.Model):
     livro_id = db.Column(db.Integer, db.ForeignKey("livros.id"))
     data_emprestimo = db.Column(db.Date, default=date.today)
     data_devolucao = db.Column(db.Date, default=lambda: date.today() + timedelta(days=7))
+    data_ultima_acao = db.Column(db.Date, default=date.today)
     status = db.Column(
         Enum(StatusEmprestimo),
         default=StatusEmprestimo.EM_ANDAMENTO,
