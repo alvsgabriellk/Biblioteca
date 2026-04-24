@@ -102,7 +102,8 @@ def total_emprestimos_ativos_e_atrasados():
 
     total_atrasado = db.session.execute(
         select(func.count()).where(
-            Emprestimo.status == StatusEmprestimo.NAO_DEVOLVIDO
+            Emprestimo.data_devolucao < date.today(),
+            Emprestimo.status == StatusEmprestimo.EM_ANDAMENTO
         )
     ).scalar()
 
