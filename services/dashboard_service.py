@@ -128,7 +128,7 @@ def atividades_recentes():
     emprestimos = db.session.execute(
         select(Emprestimo)
         .order_by(
-            Emprestimo.data_emprestimo.desc(),
+            Emprestimo.data_ultima_acao.desc(),
             Emprestimo.id.desc()
         )
         .limit(3)
