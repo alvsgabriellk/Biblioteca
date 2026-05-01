@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 from database.databanco import db
 import os
 from dotenv import load_dotenv
@@ -81,7 +81,10 @@ def controle_acesso():
         return
     if not session.get("espectador_id"):
         return redirect(url_for("login"))
-
+    
+@app.route("/googleaed7a3ffe2d125c8.html")
+def verificação_google():
+    return send_from_directory("static", "googleaed7a3ffe2d125c8.html")
 
 app.register_blueprint(usuario_bp, url_prefix="/usuarios")
 app.register_blueprint(livro_bp, url_prefix="/livros")
